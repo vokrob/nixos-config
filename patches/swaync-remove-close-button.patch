@@ -1,0 +1,81 @@
+Remove the close button overlay from notifications entirely.
+
+The close button (×) overlaps with the time label in the top-right
+corner of notifications. Since the button can also be triggered via
+middle/right click, swipe gesture, or keyboard (Delete), the visual
+close button is redundant and causes visual clutter.
+
+This patch removes the widget from both the UI blueprint and the
+Vala source: the overlay, the GtkChild reference, the hover
+controller (EventControllerMotion), the click signal, and the
+transition duration setup.
+
+diff --git a/data/ui/notification.blp b/data/ui/notification.blp
+index afb740b..805f2e7 100644
+--- a/data/ui/notification.blp
++++ b/data/ui/notification.blp
+@@ -175,9 +175,6 @@
+             ]
+           }
+         }
+-
+-        [overlay]
+-        $SwayNotificationCenterNotificationCloseButton close_button {}
+       };
+     };
+   }
+diff --git a/src/notification/notification.vala b/src/notification/notification.vala
+index d136aae..7d3f1be 100644
+--- a/src/notification/notification.vala
++++ b/src/notification/notification.vala
+@@ -19,8 +19,6 @@
+ 
+         /** The default_action gesture. Allows clicks while not in swipe gesture. */
+         private Gtk.GestureClick gesture;
+-        /** Detects when hovering over the widget */
+-        private Gtk.EventControllerMotion motion_controller;
+ 
+         [GtkChild]
+         unowned Gtk.ProgressBar progress_bar;
+@@ -29,9 +27,6 @@
+         unowned IterBox base_box;
+ 
+         [GtkChild]
+-        unowned NotificationCloseButton close_button;
+-
+-        [GtkChild]
+         unowned Gtk.Label summary;
+         [GtkChild]
+         unowned Gtk.Label time;
+@@ -214,22 +209,6 @@
+ 
+             default_action.unmap.connect (() => default_action_in = false);
+ 
+-            close_button.clicked.connect (() => {
+-                request_dismiss_notification (ClosedReasons.DISMISSED, false);
+-            });
+-
+-            motion_controller = new Gtk.EventControllerMotion ();
+-            base_widget.add_controller (motion_controller);
+-            motion_controller.enter.connect ((event) => {
+-                close_button.set_reveal (true);
+-                remove_noti_timeout ();
+-            });
+-            motion_controller.leave.connect ((controller) => {
+-                close_button.set_reveal (false);
+-                add_notification_timeout ();
+-            });
+-
+-
+             // Remove notification when it has been swiped
+             dismissible_widget.dismissed.connect (() => {
+                 request_dismiss_notification (ClosedReasons.DISMISSED, true);
+@@ -268,8 +247,6 @@
+             this.summary.set_text (param.summary ?? param.app_name);
+             this.summary.set_ellipsize (Pango.EllipsizeMode.END);
+ 
+-            close_button.set_transition_duration (this.transition_time);
+-
+             this.revealer.set_transition_duration (this.transition_time);
+ 
+             // Changes the swipe direction depending on the notifications X position

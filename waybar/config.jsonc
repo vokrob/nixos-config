@@ -1,0 +1,77 @@
+{
+    "position": "top",
+    "height": 34,
+    "margin-top": 4,
+    "margin-bottom": 1,
+    "margin-left": 8,
+    "margin-right": 8,
+
+    "spacing": 4,
+    "modules-left": [
+        "custom/launcher",
+        "tray"
+    ],
+    "modules-center": [
+        "hyprland/workspaces"
+    ],
+    "modules-right": [
+        "custom/cpu",
+        "custom/memory",
+        "pulseaudio",
+        "custom/keyboard-layout",
+        "clock"
+    ],
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "on-click": "activate",
+        "sort-by-number": true,
+        "persistent-workspaces": {
+            "*": 5
+        }
+    },
+    "custom/launcher": {
+        "format": "",
+        "on-click": "swaync-client -t",
+        "tooltip": false
+    },
+    "tray": {
+        "icon-size": 22,
+        "spacing": 8
+    },
+    "custom/keyboard-layout": {
+        "exec": "$HOME/.config/waybar/scripts/keyboard-layout.sh",
+        "on-click": "hyprctl switchxkblayout current next",
+        "restart-interval": 5,
+        "tooltip": false
+    },
+    "clock": {
+        "timezone": "Asia/Barnaul",
+        "format": " {:%H:%M}",
+        "format-alt": " {:%d.%m.%Y}",
+        "tooltip-format": "{calendar}",
+        "locale": "en_US.UTF-8",
+        "calendar": {
+            "first-day-of-week": 1,
+            "iso8601": true
+        }
+    },
+    "custom/cpu": {
+        "exec": "$HOME/.config/waybar/scripts/cpu.sh",
+        "interval": 2,
+        "return-type": "json",
+        "markup": "pango"
+    },
+    "custom/memory": {
+        "exec": "$HOME/.config/waybar/scripts/memory.sh",
+        "interval": 5,
+        "return-type": "json",
+        "markup": "pango"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-icons": ["", "", ""],
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "tooltip": false,
+        "scroll-step": 5
+    }
+}

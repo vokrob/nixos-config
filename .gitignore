@@ -1,0 +1,27 @@
+result
+result-*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets (plaintext)
+.env
+*.key
+*.pem
+id_*
+age-key.txt
+credentials*
+
+# Local workspace (not part of config, fetched at /home/vokrob/.config/openclaw/)
+workspace/
+
+

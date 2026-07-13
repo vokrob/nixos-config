@@ -1,0 +1,201 @@
+* {
+    red:     #f38ba8;
+    blue:    #89b4fa;
+    green:   #a6e3a1;
+    yellow:  #f9e2af;
+    orange:  #fab387;
+    purple:  #cba6f7;
+    pink:    #f5c2e7;
+    teal:    #94e2d5;
+    sky:     #89dceb;
+    lavender: #b4befe;
+    white:   #cdd6f4;
+    black:   #1e1e2e;
+    gray:    #6c7086;
+
+    background:     @black;
+    foreground:     @white;
+    background-alt: #313244;
+    foreground-alt: #bac2de;
+    selected:       #cba6f7;
+    selected-fg:    #1e1e2e;
+    border-color:   #45475a;
+    urgent-color:   #f38ba8;
+}
+
+configuration {
+    show-icons: true;
+    drun-icon-theme: "Papirus";
+}
+
+window {
+    transparency: "real";
+    background-color: @background;
+    text-color: @foreground;
+    border: 2px;
+    border-color: @border-color;
+    border-radius: 16px;
+    width: 650px;
+    padding: 8px;
+}
+
+mainbox {
+    background-color: transparent;
+    text-color: @foreground;
+    spacing: 8px;
+    margin: 0;
+}
+
+inputbar {
+    background-color: @background-alt;
+    text-color: @foreground;
+    border-radius: 10px;
+    padding: 10px 14px;
+    spacing: 8px;
+    margin: 0 0 8px 0;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    background-color: transparent;
+    text-color: @purple;
+    padding: 0;
+}
+
+entry {
+    background-color: transparent;
+    text-color: @foreground;
+    placeholder-text-color: @gray;
+    cursor-color: @selected;
+    expand: true;
+    horizontal-align: 0;
+    placeholder: "Поиск...";
+}
+
+listview {
+    background-color: transparent;
+    text-color: @foreground;
+    border: 0;
+    spacing: 2px;
+    margin: 0;
+    scrollbar: false;
+    columns: 1;
+    lines: 10;
+    dynamic: true;
+    layout: vertical;
+}
+
+element {
+    background-color: transparent;
+    text-color: @foreground;
+    border-radius: 10px;
+    padding: 8px 12px;
+    spacing: 10px;
+    cursor: pointer;
+}
+
+element normal {
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+element selected {
+    background-color: @selected;
+    text-color: @selected-fg;
+}
+
+element urgent {
+    background-color: transparent;
+    text-color: @urgent-color;
+}
+
+element selected.urgent {
+    background-color: @urgent-color;
+    text-color: @selected-fg;
+}
+
+element active {
+    background-color: transparent;
+    text-color: @teal;
+}
+
+element selected.active {
+    background-color: @teal;
+    text-color: @selected-fg;
+}
+
+element alternate {
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+element-icon {
+    background-color: transparent;
+    text-color: @foreground;
+    size: 28px;
+    padding: 0;
+    margin: 0;
+    vertical-align: 0.5;
+    horizontal-align: 0.5;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: @foreground;
+    padding: 0;
+    margin: 0;
+    vertical-align: 0.5;
+    horizontal-align: 0;
+    cursor: pointer;
+}
+
+element selected element-text {
+    text-color: @selected-fg;
+}
+
+element selected element-icon {
+    text-color: @selected-fg;
+}
+
+button {
+    background-color: transparent;
+    text-color: @foreground;
+    border-radius: 10px;
+    padding: 8px 12px;
+}
+
+button selected {
+    background-color: @selected;
+    text-color: @selected-fg;
+}
+
+mode-switcher {
+    background-color: transparent;
+    text-color: @foreground;
+    border: 0;
+    spacing: 4px;
+    margin: 8px 0 0 0;
+}
+
+message {
+    background-color: transparent;
+    text-color: @foreground;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin: 8px 0 0 0;
+}
+
+error-message {
+    background-color: @background;
+    text-color: @red;
+    border-radius: 10px;
+    padding: 8px 12px;
+}
+
+scrollbar {
+    background-color: transparent;
+    text-color: @foreground;
+    handle-color: @gray;
+    border-radius: 4px;
+    width: 6px;
+}
