@@ -18,9 +18,17 @@
       gateway = {
         mode = "local";
       };
+      tools = {
+        elevated = {
+          enabled = true;
+          allowFrom = {
+            telegram = [5748618304];
+          };
+        };
+      };
       channels.telegram = {
         tokenFile = "/run/agenix/openclaw-telegram-token";
-        allowFrom = [0];  # FIXME: set your actual Telegram user ID
+        allowFrom = [5748618304];
       };
       models.providers.openai = {
         baseUrl = "https://open.bigmodel.cn/api/paas/v4";
