@@ -12,5 +12,6 @@
     createDirectories = false;
     download = "/home/vokrob/Downloads";
     pictures = "/home/vokrob/Pictures";
+    documents = "/home/vokrob";
   };
 }
