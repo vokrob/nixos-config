@@ -368,7 +368,6 @@ in {
     "applications/rofi.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
     "applications/rofi-theme-selector.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
     "applications/nvim.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
-    "applications/org.xfce.mousepad.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
     "applications/mpv.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
     "applications/base.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
     "applications/calc.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
