@@ -1,4 +1,4 @@
-{ pkgs, ... }: let
+{pkgs, ...}: let
   catppuccin-gtk = pkgs.catppuccin-gtk.override {
     variant = "mocha";
     accents = ["blue"];
@@ -92,5 +92,9 @@ in {
     rustfmt
     gofumpt
     shfmt
+
+    zip
+    unzip
+    unrar
   ];
 }
