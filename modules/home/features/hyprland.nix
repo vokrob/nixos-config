@@ -8,7 +8,7 @@
 
       exec-once = [
         "systemctl --user start gvfs-daemon"
-        "swaybg -i /home/vokrob/Pictures/hero.jpg"
+        "swaybg -i /home/vokrob/Pictures/desktop.jpg"
         "swaync"
         "waybar"
         "xfconfd"
