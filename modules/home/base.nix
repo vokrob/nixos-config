@@ -10,6 +10,7 @@
   xdg.userDirs = {
     enable = true;
     createDirectories = false;
+    desktop = "$HOME";
     download = "/home/vokrob/Downloads";
     pictures = "/home/vokrob/Pictures";
     documents = "/home/vokrob";

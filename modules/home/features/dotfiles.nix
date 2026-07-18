@@ -389,4 +389,15 @@ in {
       -p /misc-confirm-move-to-trash \
       --create -t bool -s false || true
   '';
+
+  home.activation.removeDesktop = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ -d "$HOME/Desktop" ]; then
+      if [ -n "$(ls -A "$HOME/Desktop" 2>/dev/null)" ]; then
+        mkdir -p "$HOME/Desktop-old"
+        mv "$HOME/Desktop"/* "$HOME/Desktop-old/" 2>/dev/null || true
+        mv "$HOME/Desktop"/.* "$HOME/Desktop-old/" 2>/dev/null || true
+      fi
+      rmdir "$HOME/Desktop" 2>/dev/null || true
+    fi
+  '';
 }
