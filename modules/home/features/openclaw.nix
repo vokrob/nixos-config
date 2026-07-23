@@ -41,7 +41,7 @@
           name = "glm-4.7-flash";
           id = "glm-4.7-flash";
           api = "openai-completions";
-          contextWindow = 131072;
+          contextWindow = 200000;
         }];
       };
       memory.backend = "qmd";
