@@ -64,6 +64,7 @@ sudo nixos-rebuild switch --flake ~/nixos-config#vokrob
 - **Theme**: replace `blue` in Catppuccin modules
 - **Hotkeys**: `modules/home/features/hyprland.nix`
 - **Neovim**: `modules/home/programs/neovim.nix`
+- **Shell (zsh, aliases, prompt)**: `modules/home/programs/zsh.nix`
 - **Terminal**: `dotfiles/kitty.conf`
 - **Status bar**: `waybar/config.jsonc` and the Waybar CSS in `modules/home/features/dotfiles.nix`
 - **New host**: copy `hosts/nixos/` to `hosts/<hostname>/`, add `<hostname>` to `flake.nix`
