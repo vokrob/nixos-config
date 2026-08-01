@@ -22,7 +22,7 @@ jobs:
           done
 
       - name: Format check
-        run: nix run nixpkgs#alejandra -- --check .
+        run: nix fmt -- --check .
 
       - name: Flake check
         run: nix flake check
