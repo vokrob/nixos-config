@@ -18,7 +18,8 @@ jobs:
           install_url: https://releases.nixos.org/nix/nix-2.34.8/install
 
       # `openclaw-workspace` is a local path input locked at
-      # /home/vokrob/.config/openclaw; the runner needs it to exist
+      # /home/vokrob/.config/openclaw with the narHash of the real workspace;
+      # the runner overrides it below, so the dir only needs to exist
       - name: Create openclaw workspace placeholders
         run: |
           sudo mkdir -p /home/vokrob/.config/openclaw
@@ -31,4 +32,4 @@ jobs:
         run: nix fmt -- --check .
 
       - name: Flake check
-        run: nix flake check
+        run: nix flake check --override-input openclaw-workspace path:/home/vokrob/.config/openclaw
