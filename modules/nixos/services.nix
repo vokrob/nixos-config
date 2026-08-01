@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{pkgs, ...}: {
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
 
@@ -45,27 +45,4 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.backupFileExtension = "bak";
-
-  environment.systemPackages = with pkgs; [
-    amneziawg-tools
-    amneziawg-go
-  ];
-
-  environment.etc."amnezia/amneziawg/awg0.conf".source = config.age.secrets."amneziawg-awg0".path;
-
-  systemd.services.amneziawg = {
-    description = "AmneziaWG VPN Tunnel";
-    after = ["network.target"];
-    wantedBy = ["multi-user.target"];
-    path = with pkgs; [amneziawg-tools amneziawg-go iproute2 bash iptables];
-    environment = {
-      WG_QUICK_USERSPACE_IMPLEMENTATION = "amneziawg-go";
-    };
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = "yes";
-      ExecStart = "${pkgs.amneziawg-tools}/bin/awg-quick up awg0";
-      ExecStop = "${pkgs.amneziawg-tools}/bin/awg-quick down awg0";
-    };
-  };
 }

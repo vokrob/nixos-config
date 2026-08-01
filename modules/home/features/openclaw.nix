@@ -1,4 +1,4 @@
-{ openclaw-workspace, ... }: {
+{openclaw-workspace, ...}: {
   programs.openclaw = {
     enable = true;
     workspace.bootstrapFiles = {
@@ -37,12 +37,14 @@
           provider = "default";
           id = "ZHIPU_API_KEY";
         };
-        models = [{
-          name = "glm-4.7-flash";
-          id = "glm-4.7-flash";
-          api = "openai-completions";
-          contextWindow = 200000;
-        }];
+        models = [
+          {
+            name = "glm-4.7-flash";
+            id = "glm-4.7-flash";
+            api = "openai-completions";
+            contextWindow = 200000;
+          }
+        ];
       };
       memory.backend = "qmd";
 

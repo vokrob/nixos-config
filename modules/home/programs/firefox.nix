@@ -1,4 +1,4 @@
-{ pkgs, ... }: let
+{pkgs, ...}: let
   ffExtid = "{2adf0361-e6d8-4b74-b3bc-3f450e8ebb69}";
   catppuccin-firefox-theme = pkgs.stdenv.mkDerivation {
     name = "catppuccin-firefox-theme";

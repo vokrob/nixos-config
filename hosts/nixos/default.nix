@@ -1,4 +1,8 @@
-{ nix-openclaw, openclaw-workspace, ... }: {
+{
+  nix-openclaw,
+  openclaw-workspace,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos
@@ -10,5 +14,5 @@
 
   home-manager.users.vokrob = import ../../modules/home;
   home-manager.sharedModules = [nix-openclaw.homeManagerModules.openclaw];
-  home-manager.extraSpecialArgs = { inherit openclaw-workspace; };
+  home-manager.extraSpecialArgs = {inherit openclaw-workspace;};
 }

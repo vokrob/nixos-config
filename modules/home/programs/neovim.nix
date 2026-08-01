@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -32,6 +32,8 @@
       undotree
       harpoon
       toggleterm-nvim
+      vim-wakatime
+      codestats-nvim
     ];
 
     initLua = ''
@@ -174,6 +176,13 @@
       require("mini.surround").setup()
       require("mini.pairs").setup()
       require("mini.comment").setup()
+
+      local codestats_key_file = io.open("/run/agenix/codestats-api-key", "r")
+      if codestats_key_file then
+        local codestats_token = codestats_key_file:read("*l")
+        codestats_key_file:close()
+        require("codestats-nvim").setup({ token = codestats_token })
+      end
 
       vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
     '';

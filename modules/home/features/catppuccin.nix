@@ -1,4 +1,4 @@
-{ pkgs, ... }: let
+{pkgs, ...}: let
   accent = "blue";
   cursorAccent = "blue";
 
@@ -8,16 +8,17 @@
     size = "standard";
   };
 
-  catppuccin-cursor = pkgs.runCommand "catppuccin-mocha-${cursorAccent}-cursor" {
-    src = pkgs.fetchzip {
-      url = "https://github.com/catppuccin/cursors/releases/download/v2.0.0/catppuccin-mocha-${cursorAccent}-cursors.zip";
-      hash = "sha256-m8vvsnXRE1rtPz4eQpef6kyQ9ACusVXFNOjrDhYAmPk=";
-      stripRoot = false;
-    };
-  } ''
-    mkdir -p $out/share/icons
-    cp -r $src/catppuccin-mocha-${cursorAccent}-cursors $out/share/icons/
-  '';
+  catppuccin-cursor =
+    pkgs.runCommand "catppuccin-mocha-${cursorAccent}-cursor" {
+      src = pkgs.fetchzip {
+        url = "https://github.com/catppuccin/cursors/releases/download/v2.0.0/catppuccin-mocha-${cursorAccent}-cursors.zip";
+        hash = "sha256-m8vvsnXRE1rtPz4eQpef6kyQ9ACusVXFNOjrDhYAmPk=";
+        stripRoot = false;
+      };
+    } ''
+      mkdir -p $out/share/icons
+      cp -r $src/catppuccin-mocha-${cursorAccent}-cursors $out/share/icons/
+    '';
 in {
   home.pointerCursor = {
     enable = true;

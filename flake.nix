@@ -14,9 +14,19 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, agenix, nix-openclaw, openclaw-workspace, ... }@inputs: {
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    agenix,
+    nix-openclaw,
+    openclaw-workspace,
+    ...
+  } @ inputs: {
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+
     nixosConfigurations.vokrob = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit nix-openclaw openclaw-workspace; };
+      specialArgs = {inherit nix-openclaw openclaw-workspace;};
       system = "x86_64-linux";
       modules = [
         home-manager.nixosModules.home-manager

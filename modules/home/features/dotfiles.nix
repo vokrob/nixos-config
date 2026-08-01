@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: let
+{...}: let
   accent = "blue";
   accentColor = "#89b4fa";
   accentHex = "89b4fa";
@@ -6,7 +6,7 @@ in {
   xdg.configFile = {
     "kitty/kitty.conf".source = ../../../dotfiles/kitty.conf;
     "fastfetch/config.jsonc".source = ../../../dotfiles/fastfetch.jsonc;
-    "waybar/config.jsonc".source = ../../../waybar/config.jsonc;
+    "waybar/config.jsonc".source = ../../../dotfiles/waybar/config.jsonc;
     "waybar/style.css".text = ''
       @import "catppuccin-mocha.css";
 
@@ -114,21 +114,21 @@ in {
         color: @red;
       }
     '';
-    "waybar/catppuccin-mocha.css".source = ../../../waybar/catppuccin-mocha.css;
+    "waybar/catppuccin-mocha.css".source = ../../../dotfiles/waybar/catppuccin-mocha.css;
     "waybar/scripts/keyboard-layout.sh" = {
-      source = ../../../waybar/scripts/keyboard-layout.sh;
+      source = ../../../dotfiles/waybar/scripts/keyboard-layout.sh;
       executable = true;
     };
     "waybar/scripts/cpu.sh" = {
-      source = ../../../waybar/scripts/cpu.sh;
+      source = ../../../dotfiles/waybar/scripts/cpu.sh;
       executable = true;
     };
     "waybar/scripts/memory.sh" = {
-      source = ../../../waybar/scripts/memory.sh;
+      source = ../../../dotfiles/waybar/scripts/memory.sh;
       executable = true;
     };
-    "swaync/config.json".source = ../../../swaync/config.json;
-    "swaync/style.css".source = ../../../swaync/style.css;
+    "swaync/config.json".source = ../../../dotfiles/swaync/config.json;
+    "swaync/style.css".source = ../../../dotfiles/swaync/style.css;
   };
 
   xdg.configFile."rofi/config.rasi" = {
@@ -366,21 +366,4 @@ in {
     icon = "android-studio";
     categories = ["Development" "IDE"];
   };
-
-  home.activation.thunarTrashConfirm = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    ${pkgs.xfconf}/bin/xfconf-query -c thunar \
-      -p /misc-confirm-move-to-trash \
-      --create -t bool -s false || true
-  '';
-
-  home.activation.removeDesktop = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ -d "$HOME/Desktop" ]; then
-      if [ -n "$(ls -A "$HOME/Desktop" 2>/dev/null)" ]; then
-        mkdir -p "$HOME/Desktop-old"
-        mv "$HOME/Desktop"/* "$HOME/Desktop-old/" 2>/dev/null || true
-        mv "$HOME/Desktop"/.* "$HOME/Desktop-old/" 2>/dev/null || true
-      fi
-      rmdir "$HOME/Desktop" 2>/dev/null || true
-    fi
-  '';
 }
