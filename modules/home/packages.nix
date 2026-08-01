@@ -2,7 +2,27 @@
   home.packages = with pkgs; [
     ayugram-desktop
     kitty
-    waybar
+    (waybar.overrideAttrs (old: {
+      version = "git-master";
+      src = pkgs.fetchFromGitHub {
+        owner = "Alexays";
+        repo = "Waybar";
+        rev = "d44a27af1023b5c68f6f61435ba550bf03f69938";
+        hash = "sha256-qquPn4ibBnc7gA4peGgseP+lKGRq58UPxsMTSrdUT8Q=";
+      };
+      mesonFlags = old.mesonFlags ++ ["-Dwwan=disabled"];
+      postUnpack = ''
+        pushd "$sourceRoot"
+        cp -R --no-preserve=mode,ownership ${pkgs.fetchFromGitHub {
+          owner = "LukashonakV";
+          repo = "cava";
+          rev = "1.0.0";
+          hash = "sha256-0r5aAmTs+FcmS501tNYKxG9H+Pq6i32BDRBEjWW6M74=";
+        }} subprojects/cava-1.0.0
+        patchShebangs .
+        popd
+      '';
+    }))
     grim
     slurp
     wl-clipboard
