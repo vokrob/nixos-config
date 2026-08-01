@@ -5,7 +5,7 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     shellAliases = {
-      nix-switch = "git -C ~/nixos-config add . && sudo nixos-rebuild switch --flake ~/nixos-config#vokrob";
+      nix-switch = "nix flake lock --update-input openclaw-workspace && git -C ~/nixos-config add . && sudo nixos-rebuild switch --flake ~/nixos-config#vokrob";
       nix-commit = "git -C ~/nixos-config add . && git -C ~/nixos-config commit -m";
       nix-log = "git -C ~/nixos-config log --graph --oneline --decorate --all";
       v = "nvim";

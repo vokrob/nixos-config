@@ -215,8 +215,8 @@
     "openclaw-workspace": {
       "flake": false,
       "locked": {
-        "lastModified": 1784114827,
-        "narHash": "sha256-X1mpUfZtsd79GZex1ozMF10YypY2i8O71ePobnywuo4=",
+        "lastModified": 1785593108,
+        "narHash": "sha256-UMu19ADE8Mm8RjUK/Y1l/rZaG2oVPssruQqpi1/wzbI=",
         "path": "/home/vokrob/.config/openclaw",
         "type": "path"
       },
