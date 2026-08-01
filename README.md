@@ -24,7 +24,7 @@ Unified Catppuccin Mocha theme across all programs: Kitty (Zsh), Rofi, SwayNC, b
 ### Prerequisites
 
 - **NixOS** already installed
-- **age key** generated: `mkdir -p ~/.config/age && age-keygen -o ~/.config/age/key.txt`
+- **age key** generated: `mkdir -p ~/.config/agenix && age-keygen -o ~/.config/agenix/age-key.txt`
 
 ### Steps
 
@@ -63,5 +63,5 @@ sudo nixos-rebuild switch --flake /etc/nixos#vokrob
 - **Hotkeys**: `modules/home/features/hyprland.nix`
 - **Neovim**: `modules/home/programs/neovim.nix`
 - **Terminal**: `dotfiles/kitty.conf`
-- **Status bar**: `waybar/config.jsonc` and `waybar/style.css`
+- **Status bar**: `waybar/config.jsonc` and the Waybar CSS in `modules/home/features/dotfiles.nix`
 - **New host**: copy `hosts/nixos/` to `hosts/<hostname>/`, add `<hostname>` to `flake.nix`

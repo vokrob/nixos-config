@@ -78,11 +78,8 @@ in {
       }
 
       #clock,
-      #battery,
       #custom-cpu,
       #custom-memory,
-      #temperature,
-      #network,
       #pulseaudio,
       #custom-keyboard-layout {
         padding: 0 10px;
@@ -102,18 +99,8 @@ in {
         color: @teal;
       }
 
-      #custom-power {
-        color: @red;
-        padding: 0 8px 0 12px;
-        font-size: 16px;
-      }
-
       #custom-keyboard-layout {
         color: @pink;
-      }
-
-      #window {
-        color: @text;
       }
 
       .modules-right,
@@ -128,10 +115,6 @@ in {
       }
     '';
     "waybar/catppuccin-mocha.css".source = ../../../waybar/catppuccin-mocha.css;
-    "waybar/scripts/power-menu.sh" = {
-      source = ../../../waybar/scripts/power-menu.sh;
-      executable = true;
-    };
     "waybar/scripts/keyboard-layout.sh" = {
       source = ../../../waybar/scripts/keyboard-layout.sh;
       executable = true;

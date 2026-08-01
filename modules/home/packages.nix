@@ -1,26 +1,17 @@
-{pkgs, ...}: let
-  catppuccin-gtk = pkgs.catppuccin-gtk.override {
-    variant = "mocha";
-    accents = ["blue"];
-    size = "standard";
-  };
-in {
+{pkgs, ...}: {
   home.packages = with pkgs; [
     ayugram-desktop
     kitty
-    wofi
     waybar
     grim
     slurp
     wl-clipboard
-    swappy
     rofi
     papirus-icon-theme
     swaynotificationcenter
     swaybg
     thunar
     mousepad
-    catppuccin-gtk
     xfconf
     thunar-volman
     zsh-powerlevel10k
@@ -80,7 +71,6 @@ in {
     rust-analyzer
     typescript-language-server
     gopls
-    jsonnet-language-server
     yaml-language-server
     bash-language-server
 
