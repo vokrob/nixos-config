@@ -8,17 +8,18 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: DeterminateSystems/nix-installer-action@v16
-      - uses: DeterminateSystems/magic-nix-cache-action@v9
+      - uses: cachix/install-nix-action@v27
 
-      # `openclaw-workspace` is a local path input; the runner needs it to exist
+      # `openclaw-workspace` is a local path input locked at
+      # /home/vokrob/.config/openclaw; the runner needs it to exist
       - name: Create openclaw workspace placeholders
         run: |
-          mkdir -p ~/.config/openclaw
+          sudo mkdir -p /home/vokrob/.config/openclaw
+          sudo chown -R $USER /home/vokrob
           for f in AGENTS.md SOUL.md TOOLS.md IDENTITY.md USER.md; do
-            [ -f ~/.config/openclaw/$f ] || echo placeholder > ~/.config/openclaw/$f
+            [ -f /home/vokrob/.config/openclaw/$f ] || echo placeholder > /home/vokrob/.config/openclaw/$f
           done
 
       - name: Format check
