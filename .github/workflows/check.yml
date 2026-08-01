@@ -11,6 +11,11 @@ jobs:
       - uses: actions/checkout@v5
 
       - uses: cachix/install-nix-action@v27
+        with:
+          # stable nix can't lock the relative path input `root = "../.."`
+          # in openclaw/nix-openclaw-tools?dir=tools/goplaces (unlocked entry
+          # without narHash in its flake.lock); Nix >= 2.34 can
+          install_url: https://releases.nixos.org/nix/nix-2.34.8/install
 
       # `openclaw-workspace` is a local path input locked at
       # /home/vokrob/.config/openclaw; the runner needs it to exist
