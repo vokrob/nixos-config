@@ -224,6 +224,29 @@
         }
       ];
 
+      workspace_rule = [
+        {
+          workspace = "1";
+          persistent = true;
+        }
+        {
+          workspace = "2";
+          persistent = true;
+        }
+        {
+          workspace = "3";
+          persistent = true;
+        }
+        {
+          workspace = "4";
+          persistent = true;
+        }
+        {
+          workspace = "5";
+          persistent = true;
+        }
+      ];
+
       bind = [
         {
           _args = [
