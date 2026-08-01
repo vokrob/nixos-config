@@ -23,6 +23,7 @@
     ],
     "hyprland/workspaces": {
         "format": "{name}",
+        "tooltip": false,
         "sort-by-number": true,
         "persistent-workspaces": {
             "*": 5
