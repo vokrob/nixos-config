@@ -5,7 +5,7 @@
 ## Description
 
 Personal Flakes configuration with Home Manager.
-Unified Catppuccin Mocha theme across all programs: Kitty (Zsh), Rofi, SwayNC, btop, Firefox, Neovim (LSP, Treesitter, DAP, Telescope, Harpoon), Waybar with CPU/RAM monitoring and gradient coloring. Gaming: Steam, Gamescope, MangoHud.
+Unified Catppuccin Mocha theme across all programs: Kitty (Zsh), Rofi, SwayNC, btop, Firefox, Neovim (LSP, Treesitter, Telescope, Harpoon), Waybar with CPU/RAM monitoring and gradient coloring. Gaming: Steam, Gamescope, MangoHud.
 
 ## Tech Stack
 
@@ -16,7 +16,7 @@ Unified Catppuccin Mocha theme across all programs: Kitty (Zsh), Rofi, SwayNC, b
 | [agenix](https://github.com/ryantm/agenix) | Secret encryption |
 | [Hyprland](https://hyprland.org) | Wayland compositor |
 | [Catppuccin Mocha](https://github.com/catppuccin/catppuccin) | Unified theme |
-| [OpenClaw](https://github.com/openclaw/nix-openclaw) | AI assistant with Qdrant memory and Telegram |
+| [OpenClaw](https://github.com/openclaw/nix-openclaw) | AI assistant with Telegram integration |
 | [AmneziaWG](https://github.com/amnezia-vpn/amneziawg-tools) | Encrypted tunnel |
 
 ## Installation
@@ -24,24 +24,26 @@ Unified Catppuccin Mocha theme across all programs: Kitty (Zsh), Rofi, SwayNC, b
 ### Prerequisites
 
 - **NixOS** already installed
-- **age key** generated: `mkdir -p ~/.config/agenix && age-keygen -o ~/.config/agenix/age-key.txt`
+- **age key** generated: `mkdir -p ~/.config/agenix && nix shell nixpkgs#age -c age-keygen -o ~/.config/agenix/age-key.txt`
 
 ### Steps
 
 ```bash
 sudo mv /etc/nixos /etc/nixos.bak
-git clone https://github.com/vokrob/nixos-config.git /etc/nixos
+nix shell nixpkgs#git -c git clone https://github.com/vokrob/nixos-config.git ~/nixos-config
+sudo ln -s ~/nixos-config /etc/nixos
 
-nixos-generate-config --show-hardware-config > /etc/nixos/hosts/nixos/hardware-configuration.nix
+nixos-generate-config --show-hardware-config > ~/nixos-config/hosts/nixos/hardware-configuration.nix
 
-grep -oP 'age1\w+' ~/.config/age/key.txt
+grep -oP 'age1\w+' ~/.config/agenix/age-key.txt
 # Insert the key into secrets.nix replacing the existing one
 
+cd ~/nixos-config
 rm /etc/nixos/secrets/*.age
-nix shell nixpkgs#agenix -c agenix -e secrets/codestats-api-key.age
+nix shell nixpkgs#agenix -c agenix -e secrets/codestats-api-key.age -i ~/.config/agenix/age-key.txt
 # Repeat for remaining files from secrets.nix
 
-sudo nixos-rebuild switch --flake /etc/nixos#vokrob
+sudo nixos-rebuild switch --flake ~/nixos-config#vokrob
 # After the first build, the nix-switch alias will be available
 ```
 
