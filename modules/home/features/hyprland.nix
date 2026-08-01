@@ -1,6 +1,4 @@
-{ lib, ... }:
-
-{
+{lib, ...}: {
   wayland.windowManager.hyprland = {
     enable = true;
     configType = "lua";
@@ -326,21 +324,21 @@
           _args = [
             "XF86AudioRaiseVolume"
             (lib.generators.mkLuaInline "hl.dsp.exec_cmd(\"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+\")")
-            { locked = true; }
+            {locked = true;}
           ];
         }
         {
           _args = [
             "XF86AudioLowerVolume"
             (lib.generators.mkLuaInline "hl.dsp.exec_cmd(\"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-\")")
-            { locked = true; }
+            {locked = true;}
           ];
         }
         {
           _args = [
             "XF86AudioMute"
             (lib.generators.mkLuaInline "hl.dsp.exec_cmd(\"wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle\")")
-            { locked = true; }
+            {locked = true;}
           ];
         }
         {
@@ -395,14 +393,14 @@
           _args = [
             (lib.generators.mkLuaInline ''mod .. " + mouse:272"'')
             (lib.generators.mkLuaInline "hl.dsp.window.drag()")
-            { mouse = true; }
+            {mouse = true;}
           ];
         }
         {
           _args = [
             (lib.generators.mkLuaInline ''mod .. " + mouse:273"'')
             (lib.generators.mkLuaInline "hl.dsp.window.resize()")
-            { mouse = true; }
+            {mouse = true;}
           ];
         }
       ];
