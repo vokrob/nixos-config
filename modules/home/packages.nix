@@ -3,7 +3,7 @@
     ayugram-desktop
     kitty
     (waybar.overrideAttrs (old: {
-      version = "git-master";
+      version = "0.15.0";
       src = pkgs.fetchFromGitHub {
         owner = "Alexays";
         repo = "Waybar";
