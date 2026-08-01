@@ -1,0 +1,28 @@
+name: Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v16
+      - uses: DeterminateSystems/magic-nix-cache-action@v9
+
+      # `openclaw-workspace` is a local path input; the runner needs it to exist
+      - name: Create openclaw workspace placeholders
+        run: |
+          mkdir -p ~/.config/openclaw
+          for f in AGENTS.md SOUL.md TOOLS.md IDENTITY.md USER.md; do
+            [ -f ~/.config/openclaw/$f ] || echo placeholder > ~/.config/openclaw/$f
+          done
+
+      - name: Format check
+        run: nix run nixpkgs#alejandra -- --check .
+
+      - name: Flake check
+        run: nix flake check
