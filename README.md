@@ -67,4 +67,5 @@ sudo nixos-rebuild switch --flake ~/nixos-config#vokrob
 - **Shell (zsh, aliases, prompt)**: `modules/home/programs/zsh.nix`
 - **Terminal**: `dotfiles/kitty.conf`
 - **Status bar**: `waybar/config.jsonc` and the Waybar CSS in `modules/home/features/dotfiles.nix`
+- **VPN (AmneziaWG)**: `modules/nixos/features/vpn.nix`
 - **New host**: copy `hosts/nixos/` to `hosts/<hostname>/`, add `<hostname>` to `flake.nix`
