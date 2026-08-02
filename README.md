@@ -5,7 +5,7 @@
 ## Description
 
 Personal Flakes configuration with Home Manager.
-Unified Catppuccin Mocha theme across all programs: Kitty (Zsh), Rofi, SwayNC, btop, Firefox, Neovim (LSP, Treesitter, Telescope, Harpoon), Waybar with CPU/RAM monitoring and gradient coloring. Gaming: Steam, Gamescope, MangoHud.
+Unified Catppuccin Mocha theme across all programs: Kitty, Zsh (p10k), Rofi, SwayNC, btop, Firefox, Neovim (LSP, Treesitter, Telescope, Harpoon), Waybar with CPU/RAM monitoring and gradient coloring. Gaming: Steam, Gamescope, MangoHud.
 
 ## Tech Stack
 
@@ -61,11 +61,11 @@ sudo nixos-rebuild switch --flake ~/nixos-config#vokrob
 ### Customization
 
 - **Packages**: `modules/home/packages.nix`
-- **Theme**: replace `blue` in Catppuccin modules and in `dotfiles/waybar/style.css`
+- **Theme**: replace `blue` in `modules/home/features/catppuccin.nix`, the accent `#89b4fa` in `modules/home/features/dotfiles.nix` (rofi), and `@blue` in `dotfiles/waybar/catppuccin-mocha.css` (waybar)
 - **Hotkeys**: `modules/home/features/hyprland.nix`
 - **Neovim**: `modules/home/programs/neovim.nix`
 - **Shell (zsh, aliases, prompt)**: `modules/home/programs/zsh.nix`
 - **Terminal**: `dotfiles/kitty.conf`
-- **Status bar**: `dotfiles/waybar/config.jsonc` and the Waybar CSS in `modules/home/features/dotfiles.nix`
+- **Status bar**: `dotfiles/waybar/config.jsonc` and `dotfiles/waybar/style.css`
 - **VPN (AmneziaWG)**: `modules/nixos/features/vpn.nix`
-- **New host**: copy `hosts/nixos/` to `hosts/<hostname>/`, add `<hostname>` to `flake.nix`
+- **New host**: copy `hosts/nixos/` to `hosts/<hostname>/`, add a `nixosConfigurations.<user>` entry to `flake.nix`
