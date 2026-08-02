@@ -61,7 +61,7 @@ sudo nixos-rebuild switch --flake ~/nixos-config#vokrob
 ### Customization
 
 - **Packages**: `modules/home/packages.nix`
-- **Theme**: replace `blue` in Catppuccin modules
+- **Theme**: replace `blue` in Catppuccin modules and in `dotfiles/waybar/style.css`
 - **Hotkeys**: `modules/home/features/hyprland.nix`
 - **Neovim**: `modules/home/programs/neovim.nix`
 - **Shell (zsh, aliases, prompt)**: `modules/home/programs/zsh.nix`
