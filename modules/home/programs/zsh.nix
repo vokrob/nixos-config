@@ -5,7 +5,7 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     shellAliases = {
-      nix-switch = "nix flake lock --update-input openclaw-workspace && git -C ~/nixos-config add . && sudo nixos-rebuild switch --flake ~/nixos-config#vokrob";
+      nix-switch = "nix flake update openclaw-workspace --flake ~/nixos-config && git -C ~/nixos-config add . && sudo nixos-rebuild switch --flake ~/nixos-config#vokrob";
       nix-commit = "git -C ~/nixos-config add . && git -C ~/nixos-config commit -m";
       nix-log = "git -C ~/nixos-config log --graph --oneline --decorate --all";
       v = "nvim";
@@ -15,12 +15,12 @@
       setopt NO_BEEP
 
       export CODESTATS_API_KEY="$(cat /run/agenix/codestats-api-key)"
+      export WAKATIME_API_KEY="$(cat /run/agenix/wakatime-api-key)"
       source "${pkgs.writeText "codestats.plugin.zsh" (builtins.readFile ../../../dotfiles/zsh-codestats.plugin.zsh)}"
 
       wakatime_preexec() {
-        (WAKATIME_API_KEY="$(cat /run/agenix/wakatime-api-key)" \
-          wakatime-cli --write --plugin "zsh/1.0.0" \
-            --entity-type app --entity "$1" --time "$EPOCHSECONDS" \
+        (wakatime-cli --write --plugin "zsh/1.0.0" \
+          --entity-type app --entity "$1" --time "$EPOCHSECONDS" \
           2>/dev/null &)
       }
       preexec_functions+=(wakatime_preexec)
