@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   wayland.windowManager.hyprland = {
     enable = true;
     configType = "lua";
@@ -344,13 +348,13 @@
         {
           _args = [
             (lib.generators.mkLuaInline ''mod .. " + mouse_up"'')
-            (lib.generators.mkLuaInline "hl.dsp.focus({ workspace = \"+1\" })")
+            (lib.generators.mkLuaInline "hl.dsp.focus({ workspace = \"-1\" })")
           ];
         }
         {
           _args = [
             (lib.generators.mkLuaInline ''mod .. " + mouse_down"'')
-            (lib.generators.mkLuaInline "hl.dsp.focus({ workspace = \"-1\" })")
+            (lib.generators.mkLuaInline "hl.dsp.focus({ workspace = \"+1\" })")
           ];
         }
         {
@@ -411,7 +415,7 @@
           (lib.generators.mkLuaInline ''
             function()
               hl.exec_cmd("systemctl --user start gvfs-daemon")
-              hl.exec_cmd("swaybg -i /home/vokrob/Pictures/desktop.jpg")
+              hl.exec_cmd("swaybg -i ${config.home.homeDirectory}/Pictures/desktop.jpg")
               hl.exec_cmd("swaync")
               hl.exec_cmd("waybar")
               hl.exec_cmd("xfconfd")
