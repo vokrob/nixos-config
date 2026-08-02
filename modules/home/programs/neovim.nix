@@ -7,7 +7,6 @@
 
     plugins = with pkgs.vimPlugins; [
       nvim-treesitter
-      nvim-lspconfig
       catppuccin-nvim
       lualine-nvim
       which-key-nvim
@@ -112,6 +111,22 @@
         }, {
           { name = "buffer" }, { name = "path" },
         }),
+      })
+
+      require("luasnip.loaders.from_vscode").lazy_load()
+
+      cmp.setup.cmdline(":", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources(
+          { { name = "path" } },
+          { { name = "cmdline" } }
+        ),
+      })
+      cmp.setup.cmdline("/", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = "buffer" },
+        },
       })
 
       require("telescope").setup({
