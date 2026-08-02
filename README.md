@@ -11,7 +11,7 @@ Unified Catppuccin Mocha theme across all programs: Kitty, Zsh (p10k), Rofi, Swa
 
 | Technology | Purpose |
 |---|---|
-| [NixOS](https://nixos.org) + [Flakes](https://nixos.wiki/wiki/Flakes) | Operating system, reproducible configuration |
+| [NixOS](https://nixos.org) + [Flakes](https://wiki.nixos.org/wiki/Flakes) | Operating system, reproducible configuration |
 | [Home Manager](https://github.com/nix-community/home-manager) | User environment management |
 | [agenix](https://github.com/ryantm/agenix) | Secret encryption |
 | [Hyprland](https://hyprland.org) | Wayland compositor |
