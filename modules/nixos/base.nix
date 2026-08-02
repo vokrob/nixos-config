@@ -43,7 +43,6 @@
     experimental-features = ["nix-command" "flakes"];
     max-jobs = "auto";
     build-cores = 0;
-    trusted-users = ["vokrob"];
     warn-dirty = false;
     extra-substituters = ["https://cache.garnix.io"];
     extra-trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
