@@ -4,29 +4,25 @@
 
 ## Description
 
-Personal Flakes configuration with Home Manager.
-Unified Catppuccin Mocha theme across all programs: Kitty, Zsh (p10k), Rofi, SwayNC, btop, Firefox, Neovim (LSP, Treesitter, Telescope, Harpoon), Waybar with CPU/RAM monitoring and gradient coloring. Gaming: Steam, Gamescope, MangoHud.
+My personal NixOS setup, built with Flakes and Home Manager. Everything is in Catppuccin Mocha: Kitty, Zsh, Rofi, SwayNC, btop, Firefox, Neovim and Waybar (CPU/RAM graphs). OpenClaw (AI assistant) works over Telegram, AmneziaWG keeps the tunnel up, Steam / Gamescope / MangoHud cover gaming.
 
 ## Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| [NixOS](https://nixos.org) + [Flakes](https://wiki.nixos.org/wiki/Flakes) | Operating system, reproducible configuration |
-| [Home Manager](https://github.com/nix-community/home-manager) | User environment management |
-| [agenix](https://github.com/ryantm/agenix) | Secret encryption |
-| [Hyprland](https://hyprland.org) | Wayland compositor |
-| [Catppuccin Mocha](https://github.com/catppuccin/catppuccin) | Unified theme |
-| [OpenClaw](https://github.com/openclaw/nix-openclaw) | AI assistant with Telegram integration |
-| [AmneziaWG](https://github.com/amnezia-vpn/amneziawg-tools) | Encrypted tunnel |
+- NixOS + Flakes
+- Home Manager
+- agenix
+- Hyprland
+- Catppuccin Mocha
+- OpenClaw
+- AmneziaWG
 
 ## Installation
 
-### Prerequisites
+You need NixOS and an age key:
 
-- **NixOS** already installed
-- **age key** generated: `mkdir -p ~/.config/agenix && nix shell nixpkgs#age -c age-keygen -o ~/.config/agenix/age-key.txt`
-
-### Steps
+```bash
+mkdir -p ~/.config/agenix && nix shell nixpkgs#age -c age-keygen -o ~/.config/agenix/age-key.txt
+```
 
 ```bash
 sudo mv /etc/nixos /etc/nixos.bak
@@ -36,36 +32,39 @@ sudo ln -s ~/nixos-config /etc/nixos
 nixos-generate-config --show-hardware-config > ~/nixos-config/hosts/nixos/hardware-configuration.nix
 
 grep -oP 'age1\w+' ~/.config/agenix/age-key.txt
-# Insert the key into secrets.nix replacing the existing one
+# put this key into secrets.nix
+```
 
+The secrets live as encrypted `.age` files, re-encrypt them with your key:
+
+```bash
 cd ~/nixos-config
-rm /etc/nixos/secrets/*.age
+rm -f /etc/nixos/secrets/*.age
 nix shell nixpkgs#agenix -c agenix -e secrets/codestats-api-key.age -i ~/.config/agenix/age-key.txt
-# Repeat for remaining files from secrets.nix
+# repeat for the remaining files listed in secrets.nix
+```
 
+```bash
 sudo nixos-rebuild switch --flake ~/nixos-config#vokrob
-# After the first build, the nix-switch alias will be available
 ```
 
 ## Usage
 
-### Personal aliases
-
-| Command | Description |
-|---|---|
-| `nix-switch` | Apply changes |
-| `nix-log` | Commit graph |
-| `nix-commit` | Stages all changes and creates a commit with the given message |
-| `v` | Open Neovim |
+| alias         | what it does               |
+|---------------|----------------------------|
+| `nix-switch`  | update workspace, rebuild |
+| `nix-commit`  | stage everything and commit |
+| `nix-log`     | commit graph              |
+| `v`           | nvim                      |
 
 ### Customization
 
-- **Packages**: `modules/home/packages.nix`
-- **Theme**: replace `blue` in `modules/home/features/catppuccin.nix`, the accent `#89b4fa` in `modules/home/features/dotfiles.nix` (rofi), and `@blue` in `dotfiles/waybar/catppuccin-mocha.css` (waybar)
-- **Hotkeys**: `modules/home/features/hyprland.nix`
-- **Neovim**: `modules/home/programs/neovim.nix`
-- **Shell (zsh, aliases, prompt)**: `modules/home/programs/zsh.nix`
-- **Terminal**: `dotfiles/kitty.conf`
-- **Status bar**: `dotfiles/waybar/config.jsonc` and `dotfiles/waybar/style.css`
-- **VPN (AmneziaWG)**: `modules/nixos/features/vpn.nix`
-- **New host**: copy `hosts/nixos/` to `hosts/<hostname>/`, add a `nixosConfigurations.<user>` entry to `flake.nix`
+- packages: `modules/home/packages.nix`
+- theme accent: `blue` in `modules/home/features/catppuccin.nix`, `#89b4fa` in `modules/home/features/dotfiles.nix`, `@blue` in `dotfiles/waybar/catppuccin-mocha.css`
+- hotkeys: `modules/home/features/hyprland.nix`
+- neovim: `modules/home/programs/neovim.nix`
+- shell (prompt, aliases): `modules/home/programs/zsh.nix`
+- terminal: `dotfiles/kitty.conf`
+- waybar: `dotfiles/waybar/config.jsonc`, `dotfiles/waybar/style.css`
+- vpn: `modules/nixos/features/vpn.nix`
+- new host: copy `hosts/nixos/` to `hosts/<host>/` and add it to `flake.nix`
