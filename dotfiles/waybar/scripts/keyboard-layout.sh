@@ -8,14 +8,15 @@ get_flag() {
     esac
 }
 
-layout=$(hyprctl devices -j 2>/dev/null | awk '/"active_keymap"/ {gsub(/.*: "/,""); gsub(/",?/,""); k=$0} /"main": true/ && k {print k; exit}')
-[ -n "$layout" ] && get_flag "$layout"
-
-socat - "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" 2>/dev/null | while read -r line; do
-    case "$line" in
-        activelayout*)
-            layout="${line#*,}"
-            get_flag "$layout"
-            ;;
-    esac
+prev=""
+while true; do
+    layout=$(hyprctl devices -j 2>/dev/null | awk '/"active_keymap"/ {gsub(/.*: "/,""); gsub(/",?/,""); k=$0} /"main": true/ && k {print k; exit}')
+    if [ -n "$layout" ]; then
+        flag=$(get_flag "$layout")
+        if [ "$flag" != "$prev" ]; then
+            echo "$flag"
+            prev="$flag"
+        fi
+    fi
+    sleep 0.2
 done

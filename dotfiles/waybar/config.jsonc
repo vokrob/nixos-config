@@ -40,8 +40,7 @@
     },
     "custom/keyboard-layout": {
         "exec": "$HOME/.config/waybar/scripts/keyboard-layout.sh",
-        "on-click": "hyprctl switchxkblayout current next",
-        "restart-interval": 5,
+        "on-click": "hyprctl switchxkblayout by-tech-newmen-bluetooth-keyboard next",
         "tooltip": false
     },
     "clock": {
