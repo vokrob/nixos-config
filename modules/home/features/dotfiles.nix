@@ -233,7 +233,6 @@ in {
   };
 
   xdg.dataFile = {
-
     "applications/thunar-bulk-rename.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
     "applications/thunar-settings.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
     "applications/kitty.desktop".text = "[Desktop Entry]\nType=Application\nName=Hidden\nNoDisplay=true";
