@@ -96,5 +96,8 @@
     zip
     unzip
     unrar
+
+    python3
+    python3Packages.pip
   ];
 }
