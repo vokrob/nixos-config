@@ -16,6 +16,7 @@
 
       export CODESTATS_API_KEY="$(cat /run/agenix/codestats-api-key)"
       export WAKATIME_API_KEY="$(cat /run/agenix/wakatime-api-key)"
+      export BAI_API_KEY="$(cat /run/agenix/bai-api-key)"
       source "${pkgs.writeText "codestats.plugin.zsh" (builtins.readFile ../../../dotfiles/zsh-codestats.plugin.zsh)}"
 
       wakatime_preexec() {

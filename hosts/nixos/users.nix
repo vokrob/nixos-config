@@ -39,6 +39,12 @@
       group = "users";
       mode = "0400";
     };
+    "bai-api-key" = {
+      file = ../../secrets/bai-api-key.age;
+      owner = "vokrob";
+      group = "users";
+      mode = "0400";
+    };
   };
 
   age.identityPaths = ["/home/vokrob/.config/agenix/age-key.txt"];
