@@ -27,8 +27,8 @@
       group = "users";
       mode = "0400";
     };
-    "openclaw-zhipu-key" = {
-      file = ../../secrets/openclaw-zhipu-key.age;
+    "openclaw-bai-key" = {
+      file = ../../secrets/openclaw-bai-key.age;
       owner = "vokrob";
       group = "users";
       mode = "0400";

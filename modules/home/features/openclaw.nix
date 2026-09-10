@@ -10,7 +10,7 @@
     };
 
     environment = {
-      ZHIPU_API_KEY = "/run/agenix/openclaw-zhipu-key";
+      BAI_API_KEY = "/run/agenix/openclaw-bai-key";
       OPENCLAW_GATEWAY_TOKEN = "/run/agenix/openclaw-gateway-token";
     };
 
@@ -30,26 +30,26 @@
         tokenFile = "/run/agenix/openclaw-telegram-token";
         allowFrom = [5748618304];
       };
-      models.providers.openai = {
-        baseUrl = "https://open.bigmodel.cn/api/paas/v4";
+      models.providers.bai = {
+        baseUrl = "https://api.b.ai/v1";
         apiKey = {
           source = "env";
           provider = "default";
-          id = "ZHIPU_API_KEY";
+          id = "BAI_API_KEY";
         };
         models = [
           {
-            name = "glm-4.7-flash";
-            id = "glm-4.7-flash";
+            name = "GLM-5.3-Flash";
+            id = "glm-5.3-flash";
             api = "openai-completions";
-            contextWindow = 200000;
+            contextWindow = 1048576;
           }
         ];
       };
       memory.backend = "qmd";
 
       agents.defaults = {
-        model.primary = "openai/glm-4.7-flash";
+        model.primary = "bai/glm-5.3-flash";
         thinkingDefault = "low";
         compaction.reserveTokensFloor = 20000;
       };
