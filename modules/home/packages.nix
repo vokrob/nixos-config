@@ -28,7 +28,6 @@
     fzf
     fastfetch
     wakatime-cli
-    opencode
     discord
     anytype
     socat

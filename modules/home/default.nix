@@ -6,6 +6,7 @@
     ./programs/firefox.nix
     ./programs/btop.nix
     ./programs/zsh.nix
+    ./programs/opencode.nix
     ./features/hyprland.nix
     ./features/catppuccin.nix
     ./features/openclaw.nix
