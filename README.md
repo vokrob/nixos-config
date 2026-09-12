@@ -4,7 +4,7 @@
 
 ## Description
 
-My personal NixOS setup, built with Flakes and Home Manager. Everything is in Catppuccin Mocha: Kitty, Zsh, Rofi, SwayNC, btop, Firefox, Neovim and Waybar (CPU/RAM graphs). OpenClaw (AI assistant) works over Telegram, AmneziaWG keeps the tunnel up, Steam / Gamescope / MangoHud cover gaming.
+My personal NixOS setup, built with Flakes and Home Manager. Everything is in Catppuccin Mocha: Kitty, Zsh, Rofi, SwayNC, btop, Firefox, Neovim, Waybar (CPU/RAM graphs) and opencode. OpenClaw (AI assistant) works over Telegram, AmneziaWG keeps the tunnel up, Steam / Gamescope / MangoHud cover gaming.
 
 ## Tech Stack
 
@@ -14,6 +14,7 @@ My personal NixOS setup, built with Flakes and Home Manager. Everything is in Ca
 - Hyprland
 - Catppuccin Mocha
 - OpenClaw
+- opencode
 - AmneziaWG
 
 ## Installation
@@ -34,6 +35,12 @@ nixos-generate-config --show-hardware-config > ~/nixos-config/hosts/nixos/hardwa
 grep -oP 'age1\w+' ~/.config/agenix/age-key.txt
 # put this key into secrets.nix
 ```
+
+Note: `openclaw-workspace` in `flake.nix` is a local `path:` input (`/home/vokrob/.config/openclaw`
+with `AGENTS.md`, `SOUL.md`, `TOOLS.md`, `IDENTITY.md`, `USER.md`, not committed to GitHub).
+On a fresh clone create these files (see the placeholder trick in `.github/workflows/check.yml`)
+and `nix flake update openclaw-workspace`, or drop the input together with
+`modules/home/features/openclaw.nix`.
 
 The secrets live as encrypted `.age` files, re-encrypt them with your key:
 
@@ -60,6 +67,7 @@ sudo nixos-rebuild switch --flake ~/nixos-config#vokrob
 ### Customization
 
 - packages: `modules/home/packages.nix`
+- AI models/provider: `modules/home/programs/opencode.nix`, `modules/home/features/openclaw.nix`
 - theme accent: `blue` in `modules/home/features/catppuccin.nix`, `#89b4fa` in `modules/home/features/dotfiles.nix`, `@blue` in `dotfiles/waybar/catppuccin-mocha.css`
 - hotkeys: `modules/home/features/hyprland.nix`
 - neovim: `modules/home/programs/neovim.nix`
