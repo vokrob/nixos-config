@@ -1,7 +1,7 @@
 import type { Plugin } from "@opencode-ai/plugin"
 
 /**
- * Concurrency limiter + retry for the B.AI (GLM) provider.
+ * Concurrency limiter + retry for the B.AI provider.
  *
  * opencode fires many parallel requests (main agent stream, background
  * title/summary tasks, subagents) against one API key. Upstream api.b.ai

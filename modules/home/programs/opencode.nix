@@ -8,15 +8,15 @@
       # background tasks don't need heavy reasoning: run them on the "low" variant
       agent = {
         title = {
-          model = "bai/GLM-5.3-Flash";
+          model = "bai/Qwen3.8-Flash";
           variant = "low";
         };
         summary = {
-          model = "bai/GLM-5.3-Flash";
+          model = "bai/Qwen3.8-Flash";
           variant = "low";
         };
         compaction = {
-          model = "bai/GLM-5.3-Flash";
+          model = "bai/Qwen3.8-Flash";
           variant = "low";
         };
       };
@@ -29,11 +29,11 @@
           # API key is read from the BAI_API_KEY environment variable
           apiKey = "{env:BAI_API_KEY}";
         };
-        models."GLM-5.3-Flash" = {
-          name = "GLM-5.3-Flash";
-          id = "glm-5.3-flash";
-          attachment = true; # verified: API accepts images
-          reasoning = true; # verified: reasoning_content confirmed
+        models."Qwen3.8-Flash" = {
+          name = "Qwen3.8-Flash";
+          id = "qwen3.8-flash";
+          attachment = true; # TODO: verify image support
+          reasoning = true; # TODO: verify reasoning_content
           tool_call = true;
           limit = {
             context = 1000000;

@@ -39,8 +39,8 @@
         };
         models = [
           {
-            name = "GLM-5.3-Flash";
-            id = "glm-5.3-flash";
+            name = "Qwen3.8-Flash";
+            id = "qwen3.8-flash";
             api = "openai-completions";
             contextWindow = 1048576;
           }
@@ -49,7 +49,7 @@
       memory.backend = "qmd";
 
       agents.defaults = {
-        model.primary = "bai/glm-5.3-flash";
+        model.primary = "bai/qwen3.8-flash";
         thinkingDefault = "low";
         compaction.reserveTokensFloor = 20000;
       };
