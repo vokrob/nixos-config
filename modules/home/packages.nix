@@ -35,6 +35,8 @@
     wf-recorder
     imv
     mpv
+    yt-dlp
+    ffmpeg
     mangohud
     gamescope
 
