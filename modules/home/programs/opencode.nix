@@ -1,8 +1,14 @@
-{...}: {
+{pkgs, ...}: {
   programs.opencode = {
     enable = true;
 
+    # wakatime-cli must be on PATH so opencode-wakatime uses the nix package
+    # instead of downloading its own binary into ~/.wakatime/
+    extraPackages = [pkgs.wakatime-cli];
+
     settings = {
+      plugin = ["opencode-wakatime"];
+
       # no top-level "model": startup uses the last used model
       # (persisted in ~/.local/state/opencode/model.json)
       # background tasks don't need heavy reasoning: run them on the "low" variant
