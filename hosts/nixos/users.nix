@@ -27,12 +27,6 @@
       group = "users";
       mode = "0400";
     };
-    "openclaw-bai-key" = {
-      file = ../../secrets/openclaw-bai-key.age;
-      owner = "vokrob";
-      group = "users";
-      mode = "0400";
-    };
     "openclaw-gateway-token" = {
       file = ../../secrets/openclaw-gateway-token.age;
       owner = "vokrob";

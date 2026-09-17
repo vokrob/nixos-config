@@ -6,6 +6,5 @@ in {
   "secrets/wakatime-api-key.age".publicKeys = [system];
   "secrets/gemini-api-key.age".publicKeys = [system];
   "secrets/openclaw-telegram-token.age".publicKeys = [system];
-  "secrets/openclaw-bai-key.age".publicKeys = [system];
   "secrets/openclaw-gateway-token.age".publicKeys = [system];
 }

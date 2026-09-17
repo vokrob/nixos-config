@@ -10,7 +10,7 @@
     };
 
     environment = {
-      BAI_API_KEY = "/run/agenix/openclaw-bai-key";
+      GEMINI_API_KEY = "/run/agenix/gemini-api-key";
       OPENCLAW_GATEWAY_TOKEN = "/run/agenix/openclaw-gateway-token";
     };
 
@@ -30,18 +30,17 @@
         tokenFile = "/run/agenix/openclaw-telegram-token";
         allowFrom = [5748618304];
       };
-      models.providers.bai = {
-        baseUrl = "https://api.b.ai/v1";
+      models.providers.google = {
         apiKey = {
           source = "env";
           provider = "default";
-          id = "BAI_API_KEY";
+          id = "GEMINI_API_KEY";
         };
         models = [
           {
-            name = "Qwen3.8-Flash";
-            id = "qwen3.8-flash";
-            api = "openai-completions";
+            name = "Gemini 3.5 Flash Lite";
+            id = "gemini-3.5-flash-lite";
+            api = "google-generative-ai";
             contextWindow = 1048576;
           }
         ];
@@ -49,7 +48,7 @@
       memory.backend = "qmd";
 
       agents.defaults = {
-        model.primary = "bai/qwen3.8-flash";
+        model.primary = "google/gemini-3.5-flash-lite";
         thinkingDefault = "low";
         compaction.reserveTokensFloor = 20000;
       };
