@@ -8,6 +8,7 @@
 
     settings = {
       plugin = ["opencode-wakatime"];
+      small_model = "google/gemini-3.5-flash-lite";
     };
   };
 }

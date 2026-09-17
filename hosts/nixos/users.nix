@@ -39,6 +39,12 @@
       group = "users";
       mode = "0400";
     };
+    "gemini-api-key" = {
+      file = ../../secrets/gemini-api-key.age;
+      owner = "vokrob";
+      group = "users";
+      mode = "0400";
+    };
   };
 
   age.identityPaths = ["/home/vokrob/.config/agenix/age-key.txt"];

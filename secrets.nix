@@ -4,6 +4,7 @@ in {
   "secrets/codestats-api-key.age".publicKeys = [system];
   "secrets/amneziawg-awg0.age".publicKeys = [system];
   "secrets/wakatime-api-key.age".publicKeys = [system];
+  "secrets/gemini-api-key.age".publicKeys = [system];
   "secrets/openclaw-telegram-token.age".publicKeys = [system];
   "secrets/openclaw-bai-key.age".publicKeys = [system];
   "secrets/openclaw-gateway-token.age".publicKeys = [system];
