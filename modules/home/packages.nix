@@ -27,6 +27,7 @@
     zoxide
     fzf
     fastfetch
+    ookla-speedtest
     wakatime-cli
     discord
     anytype
