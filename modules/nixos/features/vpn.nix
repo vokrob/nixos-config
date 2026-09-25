@@ -19,11 +19,19 @@
 
   systemd.services.amneziawg = {
     description = "AmneziaWG VPN Tunnel";
-    after = ["network.target"];
+    after = [
+      "network-online.target"
+      "nss-lookup.target"
+    ];
+    wants = [
+      "network-online.target"
+      "nss-lookup.target"
+    ];
     wantedBy = ["multi-user.target"];
     path = with pkgs; [amneziawg-tools amneziawg-go iproute2 bash iptables];
     environment = {
       WG_QUICK_USERSPACE_IMPLEMENTATION = "amneziawg-go";
+      WG_ENDPOINT_RESOLUTION_RETRIES = "infinity";
     };
     serviceConfig = {
       Type = "oneshot";
