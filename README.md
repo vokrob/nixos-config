@@ -9,8 +9,11 @@ OpenClaw, AmneziaWG, and gaming tools.
 
 ## Tech Stack
 
-NixOS, Flakes, Home Manager, agenix, Hyprland, Catppuccin Mocha, OpenClaw, opencode, AmneziaWG,
-Steam, Gamescope, and MangoHud.
+- NixOS, Flakes, Home Manager
+- agenix, AmneziaWG
+- Hyprland, Catppuccin Mocha
+- Steam, Gamescope, MangoHud
+- OpenClaw, opencode
 
 ## Installation
 
