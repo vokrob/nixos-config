@@ -38,8 +38,8 @@
         };
         models = [
           {
-            name = "Gemini 3.5 Flash Lite";
-            id = "gemini-3.5-flash-lite";
+            name = "Gemini Flash Lite Latest";
+            id = "gemini-flash-lite-latest";
             api = "google-generative-ai";
             contextWindow = 1048576;
           }
@@ -48,7 +48,7 @@
       memory.backend = "qmd";
 
       agents.defaults = {
-        model.primary = "google/gemini-3.5-flash-lite";
+        model.primary = "google/gemini-flash-lite-latest";
         thinkingDefault = "low";
         compaction.reserveTokensFloor = 20000;
       };
