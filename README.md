@@ -10,12 +10,12 @@ OpenClaw, AmneziaWG, and gaming tools.
 ## Tech Stack
 
 - NixOS, Flakes, Home Manager
-- agenix, AmneziaWG
 - Hyprland (Lua config), Catppuccin Mocha
 - greetd, systemd-boot, zram swap
 - Waybar, SwayNC, Kitty, Rofi, Thunar, fastfetch
 - zsh + powerlevel10k, zoxide, fzf
 - Steam, GameMode, Gamescope, MangoHud
+- agenix, AmneziaWG
 - wakatime, Codestats, Gemini API keys
 - nvim, opencode
 - OpenClaw (Telegram gateway)
@@ -23,122 +23,39 @@ OpenClaw, AmneziaWG, and gaming tools.
 
 ## Installation
 
-Requires x86_64 NixOS, sudo, an age key, and Nix >= 2.34. Older versions cannot
-lock the relative path input `root = "../.."` in `nix-openclaw-tools?dir=tools/goplaces`,
-so `nix flake check` fails with `lock file contains unlocked input`. Git is not
-needed up front: the steps below pull it in via `nix shell`. Note that the config
-itself does not install `git`, so after the first rebuild add `programs.git.enable = true;`
-to `modules/nixos/base.nix`, or run `nix profile install nixpkgs#git`; otherwise
-the `nix-switch`, `nix-commit` and `nix-log` aliases fail, since all three call
-`git` on the repo.
-
-Flakes must be enabled in `nix.conf` before the first command below; the config
-itself sets `experimental-features` only after a successful rebuild.
+Requires x86_64 NixOS, sudo, an age key and Nix >= 2.34.
 
 ```bash
 echo 'experimental-features = nix-command flakes' | sudo tee -a /etc/nix/nix.conf
 mkdir -p ~/.config/agenix && nix shell nixpkgs#age -c age-keygen -o ~/.config/agenix/age-key.txt
-sudo mv /etc/nixos /etc/nixos.bak 2>/dev/null || true
 nix shell nixpkgs#git -c git clone https://github.com/vokrob/nixos-config.git ~/nixos-config
 nixos-generate-config --show-hardware-config > ~/nixos-config/hosts/nixos/hardware-configuration.nix
 ```
 
-Every command below addresses the config by path (`--flake ~/nixos-config`), so
-nothing needs to live in `/etc/nixos`; the old directory is only moved aside to
-avoid confusion.
+Before the first rebuild:
 
-`hosts/nixos/hardware-configuration.nix` stays tracked on purpose: Nix flakes
-only see files tracked by git, and `hosts/nixos/default.nix` imports it, so
-ignoring it breaks evaluation. The copy in the repo is generated on my machine
-and holds my disk UUIDs, so regenerate yours (the step above already does) and
-do not commit the result.
-
-`.github/workflows/check.yml` runs `nix fmt -- --check .` and `nix flake check`
-on every push and pull request. It creates placeholder files for the workspace
-input before evaluating and overrides it on the command line. It also installs
-Nix 2.34.8 explicitly, for the reason above; the `--override-input` on the
-workspace has no bearing on that lock error. The path `/home/vokrob` is
-hardcoded throughout that file, so replace it if you fork.
-
-### Personalize
-
-The repo ships with `vokrob` as the user name and a workspace path in the flake.
-Replace them before the first rebuild:
-
-| file | what to change |
-|------|----------------|
-| `flake.nix` | `openclaw-workspace.url` → `path:/home/<you>/.config/openclaw` |
-| `flake.nix` | `nixosConfigurations.vokrob` is the output name. Rename it and update `#vokrob` in the rebuild command below and in the `nix-switch` alias (`modules/home/programs/zsh.nix:8`) |
-| `flake.lock` | don't edit by hand; `nix flake update openclaw-workspace` below regenerates the path and its `narHash` together |
-| `hosts/nixos/default.nix` | `networking.hostName`, `services.greetd...user`, `home-manager.users.<name>`, `nix.settings.trusted-users`, `time.timeZone` (currently `Asia/Barnaul`), and `services.udev.extraRules`, which holds this machine's disk UUIDs, delete or replace it |
-| `hosts/nixos/users.nix` | `users.users."vokrob"` block, the `owner = "vokrob"` on each `age.secrets` entry, and `age.identityPaths` → `["/home/<you>/.config/agenix/age-key.txt"]` |
-| `modules/nixos/base.nix` | `i18n.extraLocaleSettings` is set to `ru_RU.UTF-8` |
-| `dotfiles/waybar/config.jsonc` | `clock.timezone` (currently `Asia/Barnaul`) and the device name in `custom/keyboard-layout.on-click`, which is this machine's Bluetooth keyboard |
-| `modules/home/base.nix` | `home.username`, `home.homeDirectory`, and the absolute paths in `xdg.userDirs` |
-| `modules/home/programs/firefox.nix` | `browser.download.dir` |
-| `modules/home/features/hyprland.nix` | `config.input.kb_layout` is `us,ru` |
-| `modules/home/features/openclaw.nix` | `allowFrom` Telegram IDs (in both `tools.elevated` and `channels.telegram`) |
-
-`users.users."vokrob"` has no password set in the config, and `greetd`
-authenticates through PAM, so set one before your first login, either add an
-`initialPassword`/`hashedPassword` in `hosts/nixos/users.nix`, or run
-`passwd vokrob` right after the first rebuild (it survives rebuilds, since
-`users.mutableUsers` is on by default). `security.sudo.enable` is already `true`
-by default in nixpkgs, so `sudo` works out of the box.
-
-The wallpaper path is hardcoded in `modules/home/features/hyprland.nix`; put your
-own image at `~/Pictures/desktop.jpg`. Note that `modules/home/base.nix` sets
-`xdg.userDirs.createDirectories = false`, so `~/Downloads` and `~/Pictures` are
-not created for you; make them yourself.
-
-### OpenClaw workspace
-
-The flake takes the workspace from a local path input; it must exist with these
-five files or evaluation fails:
+- replace `vokrob` with your own name everywhere it appears (`flake.nix`, `hosts/nixos/`, `modules/home/`, `.github/workflows/check.yml`) and in the `nix-switch` alias;
+- put your public key on line 2 of `secrets.nix`, delete `secrets/*.age` and re-encrypt the six entries with `nix run github:ryantm/agenix -- -e secrets/<name>.age`;
+- create `~/.config/openclaw/{AGENTS,SOUL,TOOLS,IDENTITY,USER}.md`, then run `nix flake update openclaw-workspace --flake ~/nixos-config`;
+- fix the settings that are hardcoded without the user name: `Asia/Barnaul` in `hosts/nixos/default.nix` and `dotfiles/waybar/config.jsonc`, `ru_RU.UTF-8` in `modules/nixos/base.nix`, your Telegram ID in both `allowFrom` blocks in `modules/home/features/openclaw.nix`.
 
 ```bash
-mkdir -p ~/.config/openclaw
-for f in AGENTS.md SOUL.md TOOLS.md IDENTITY.md USER.md; do
-  echo "# $f" > ~/.config/openclaw/$f
-done
+sudo nixos-rebuild switch --flake ~/nixos-config#<you>
+passwd <you>
 ```
 
-After editing them, refresh the lock for that input before rebuilding:
+`passwd` is needed right after the first rebuild, since the config sets no password and `greetd`
+authenticates through PAM.
 
-```bash
-nix flake update openclaw-workspace --flake ~/nixos-config
-```
+`hosts/nixos/hardware-configuration.nix` must stay tracked by git (it is imported by `hosts/nixos/default.nix`),
+but the shipped copy holds this machine's disk UUIDs, so regenerate it and do not commit it.
 
-### Secrets
+The config does not install `git`, which the `nix-*` aliases call; add `programs.git.enable = true;` to
+`modules/nixos/base.nix` after the first rebuild.
 
-`secrets/*.age` in the repo are encrypted to my key. Create your own values, drop
-the shipped files, and re-encrypt all six entries listed in `secrets.nix`. Also
-replace the recipient on line 2 of `secrets.nix` with the key from your own
-`age-key.txt`, otherwise agenix encrypts to the wrong key:
-
-```bash
-# agenix reads ./secrets.nix relative to the cwd, so run from the repo root
-cd ~/nixos-config
-grep -oP 'age1\w+' ~/.config/agenix/age-key.txt  # put this key into secrets.nix
-rm -f secrets/*.age
-
-# opens $EDITOR, type the value, save, and the file gets encrypted
-nix run github:ryantm/agenix -- -e secrets/codestats-api-key.age
-# repeat for the other five files
-sudo nixos-rebuild switch --flake ~/nixos-config#vokrob
-```
-
-Without an interactive editor, pipe the value in: agenix reads stdin when it
-is not a terminal:
-
-```bash
-printf '%s' 'YOUR_KEY' | nix run github:ryantm/agenix -- -e secrets/codestats-api-key.age
-```
-
-- `codestats-api-key`, `wakatime-api-key`, `gemini-api-key`: third-party API keys
-- `openclaw-telegram-token`: bot token from @BotFather
-- `openclaw-gateway-token`: any random string you generate
-- `amneziawg-awg0`: a full `awg-quick` config for your tunnel
+`modules/home/base.nix` sets `xdg.userDirs.createDirectories = false`, so the wallpaper directory is not
+created for you. Run `mkdir -p ~/Pictures ~/Downloads` and put an image at `~/Pictures/desktop.jpg`
+(`modules/home/features/hyprland.nix`), otherwise `swaybg` finds nothing and Hyprland starts with a black background.
 
 ## Usage
 
@@ -149,10 +66,5 @@ printf '%s' 'YOUR_KEY' | nix run github:ryantm/agenix -- -e secrets/codestats-ap
 | `nix-log`    | show the commit graph              |
 | `v`          | open nvim                          |
 
-`rec-toggle {full,region,window,stop}` wraps wf-recorder: `Scroll_Lock` (region),
-`mod + Scroll_Lock` (window), `mod + SHIFT + Scroll_Lock` (full), `Pause` (stop).
-Each recording is written to `~/video-<timestamp>.mp4`.
-
-Print takes screenshots through grim instead: `PRINT` (area), `mod + PRINT`
-(active window), `mod + SHIFT + PRINT` (full screen). Each one is saved to
-`~/screenshot-<timestamp>.png` and copied to the clipboard.
+`rec-toggle {full,region,window,stop}` wraps wf-recorder (`Scroll_Lock` combos, `Pause` stops) and writes to
+`~/video-<timestamp>.mp4`; the `PRINT` combos take screenshots with grim into `~/screenshot-<timestamp>.png`.
