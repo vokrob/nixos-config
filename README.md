@@ -23,9 +23,12 @@ OpenClaw, AmneziaWG, and gaming tools.
 
 ## Installation
 
-Requires x86_64 NixOS, sudo, an age key, and Nix 2.34+ (older Nix cannot lock the
-relative path inputs in `nix-openclaw`). Git is not needed up front: the steps
-below pull it in via `nix shell`.
+Requires x86_64 NixOS, sudo, an age key, and any recent Nix. Git is not needed
+up front: the steps below pull it in via `nix shell`. Note that the config itself
+does not install `git`, so after the first rebuild add `programs.git.enable = true;`
+to `modules/nixos/base.nix`, or run `nix profile install nixpkgs#git`; otherwise
+the `nix-switch`, `nix-commit` and `nix-log` aliases fail, since all three call
+`git` on the repo.
 
 Flakes must be enabled in `nix.conf` before the first command below; the config
 itself sets `experimental-features` only after a successful rebuild.
@@ -33,17 +36,19 @@ itself sets `experimental-features` only after a successful rebuild.
 ```bash
 echo 'experimental-features = nix-command flakes' | sudo tee -a /etc/nix/nix.conf
 mkdir -p ~/.config/agenix && nix shell nixpkgs#age -c age-keygen -o ~/.config/agenix/age-key.txt
-sudo mv /etc/nixos /etc/nixos.bak
+sudo mv /etc/nixos /etc/nixos.bak 2>/dev/null || true
 nix shell nixpkgs#git -c git clone https://github.com/vokrob/nixos-config.git ~/nixos-config
-sudo ln -s ~/nixos-config /etc/nixos
 nixos-generate-config --show-hardware-config > ~/nixos-config/hosts/nixos/hardware-configuration.nix
 ```
 
+Every command below addresses the config by path (`--flake ~/nixos-config`), so
+nothing needs to live in `/etc/nixos`; the old directory is only moved aside to
+avoid confusion.
+
 `.github/workflows/check.yml` runs `nix fmt -- --check .` and `nix flake check`
-on every push, with Nix 2.34 pinned there for the same reason. It creates
-placeholder files for the workspace input before evaluating and overrides it on
-the command line. The path `/home/vokrob` is hardcoded throughout that file, so
-replace it if you fork.
+on every push and pull request. It creates placeholder files for the workspace
+input before evaluating and overrides it on the command line. The path
+`/home/vokrob` is hardcoded throughout that file, so replace it if you fork.
 
 ### Personalize
 
@@ -54,12 +59,14 @@ Replace them before the first rebuild:
 |------|----------------|
 | `flake.nix` | `openclaw-workspace.url` → `path:/home/<you>/.config/openclaw` |
 | `flake.nix` | `nixosConfigurations.vokrob` is the output name. Rename it and update `#vokrob` in the rebuild command below and in the `nix-switch` alias (`modules/home/programs/zsh.nix:8`) |
-| `flake.lock` | same workspace path, inside `openclaw-workspace` |
+| `flake.lock` | don't edit by hand; `nix flake update openclaw-workspace` below regenerates the path and its `narHash` together |
 | `hosts/nixos/default.nix` | `networking.hostName`, `services.greetd...user`, `home-manager.users.<name>`, `nix.settings.trusted-users`, `time.timeZone` (currently `Asia/Barnaul`), and `services.udev.extraRules`, which holds this machine's disk UUIDs, delete or replace it |
 | `hosts/nixos/users.nix` | `users.users."vokrob"` block, the `owner = "vokrob"` on each `age.secrets` entry, and `age.identityPaths` → `["/home/<you>/.config/agenix/age-key.txt"]` |
 | `modules/nixos/base.nix` | `i18n.extraLocaleSettings` is set to `ru_RU.UTF-8` |
+| `dotfiles/waybar/config.jsonc` | `clock.timezone` (currently `Asia/Barnaul`) and the device name in `custom/keyboard-layout.on-click`, which is this machine's Bluetooth keyboard |
 | `modules/home/base.nix` | `home.username`, `home.homeDirectory`, and the absolute paths in `xdg.userDirs` |
 | `modules/home/programs/firefox.nix` | `browser.download.dir` |
+| `modules/home/features/hyprland.nix` | `config.input.kb_layout` is `us,ru` |
 | `modules/home/features/openclaw.nix` | `allowFrom` Telegram IDs (in both `tools.elevated` and `channels.telegram`) |
 
 `users.users."vokrob"` has no password set in the config, and `greetd`
