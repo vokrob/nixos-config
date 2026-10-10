@@ -23,8 +23,8 @@
         };
 
         general = {
-          gaps_in = 5;
-          gaps_out = 10;
+          gaps_in = 0;
+          gaps_out = 0;
           border_size = 2;
           col = {
             active_border = {
@@ -39,13 +39,13 @@
         };
 
         decoration = {
-          rounding = 8;
+          rounding = 0;
           active_opacity = 1.0;
           inactive_opacity = 0.92;
           fullscreen_opacity = 1.0;
 
           shadow = {
-            enabled = true;
+            enabled = false;
             range = 20;
             render_power = 3;
             color = "rgba(11111b66)";
@@ -130,18 +130,18 @@
 
       animation = [
         {
-          leaf = "windows";
+          leaf = "windowsIn";
           enabled = true;
           speed = 4;
           bezier = "easeOutExpo";
-          style = "slide bottom";
+          style = "popin 87%";
         }
         {
           leaf = "windowsOut";
           enabled = true;
           speed = 4;
           bezier = "easeOutExpo";
-          style = "slide bottom";
+          style = "popin 87%";
         }
         {
           leaf = "fade";
@@ -158,7 +158,21 @@
         {
           leaf = "workspaces";
           enabled = true;
-          speed = 5;
+          speed = 8;
+          bezier = "easeOutExpo";
+          style = "slidefade";
+        }
+        {
+          leaf = "workspacesIn";
+          enabled = true;
+          speed = 6;
+          bezier = "easeOutExpo";
+          style = "slidefade";
+        }
+        {
+          leaf = "workspacesOut";
+          enabled = true;
+          speed = 8;
           bezier = "easeOutExpo";
           style = "slidefade";
         }
@@ -173,21 +187,21 @@
           enabled = true;
           speed = 4;
           bezier = "easeOutExpo";
-          style = "slide bottom";
+          style = "popin 87%";
         }
         {
           leaf = "layersOut";
           enabled = true;
           speed = 4;
           bezier = "easeOutExpo";
-          style = "slide bottom";
+          style = "popin 87%";
         }
         {
           leaf = "windowsMove";
           enabled = true;
           speed = 4;
           bezier = "easeOutExpo";
-          style = "slide";
+          style = "popin 87%";
         }
         {
           leaf = "borderangle";
@@ -195,13 +209,6 @@
           speed = 15;
           bezier = "easeOutExpo";
           style = "once";
-        }
-        {
-          leaf = "specialWorkspace";
-          enabled = true;
-          speed = 5;
-          bezier = "easeOutExpo";
-          style = "slidefadevert";
         }
       ];
 
