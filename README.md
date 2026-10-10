@@ -151,6 +151,8 @@ printf '%s' 'YOUR_KEY' | nix run github:ryantm/agenix -- -e secrets/codestats-ap
 
 `rec-toggle {full,region,window,stop}` wraps wf-recorder: `Scroll_Lock` (region),
 `mod + Scroll_Lock` (window), `mod + SHIFT + Scroll_Lock` (full), `Pause` (stop).
+Each recording is written to `~/video-<timestamp>.mp4`.
 
 Print takes screenshots through grim instead: `PRINT` (area), `mod + PRINT`
-(active window), `mod + SHIFT + PRINT` (full screen), each copied to the clipboard.
+(active window), `mod + SHIFT + PRINT` (full screen). Each one is saved to
+`~/screenshot-<timestamp>.png` and copied to the clipboard.
