@@ -24,4 +24,10 @@ credentials*
 # Local workspace (not part of config, fetched at /home/vokrob/.config/openclaw/)
 workspace/
 
+# NOTE: hosts/nixos/hardware-configuration.nix is deliberately NOT ignored.
+# It is imported by hosts/nixos/default.nix, and Nix flakes only see files
+# tracked by git, so ignoring it breaks `nix flake check` and nixos-rebuild.
+# The tracked copy was generated on my machine and holds my disk UUIDs:
+# regenerate it locally with nixos-generate-config and do not commit the result.
+
 

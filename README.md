@@ -23,9 +23,11 @@ OpenClaw, AmneziaWG, and gaming tools.
 
 ## Installation
 
-Requires x86_64 NixOS, sudo, an age key, and any recent Nix. Git is not needed
-up front: the steps below pull it in via `nix shell`. Note that the config itself
-does not install `git`, so after the first rebuild add `programs.git.enable = true;`
+Requires x86_64 NixOS, sudo, an age key, and Nix >= 2.34. Older versions cannot
+lock the relative path input `root = "../.."` in `nix-openclaw-tools?dir=tools/goplaces`,
+so `nix flake check` fails with `lock file contains unlocked input`. Git is not
+needed up front: the steps below pull it in via `nix shell`. Note that the config
+itself does not install `git`, so after the first rebuild add `programs.git.enable = true;`
 to `modules/nixos/base.nix`, or run `nix profile install nixpkgs#git`; otherwise
 the `nix-switch`, `nix-commit` and `nix-log` aliases fail, since all three call
 `git` on the repo.
@@ -45,10 +47,18 @@ Every command below addresses the config by path (`--flake ~/nixos-config`), so
 nothing needs to live in `/etc/nixos`; the old directory is only moved aside to
 avoid confusion.
 
+`hosts/nixos/hardware-configuration.nix` stays tracked on purpose: Nix flakes
+only see files tracked by git, and `hosts/nixos/default.nix` imports it, so
+ignoring it breaks evaluation. The copy in the repo is generated on my machine
+and holds my disk UUIDs, so regenerate yours (the step above already does) and
+do not commit the result.
+
 `.github/workflows/check.yml` runs `nix fmt -- --check .` and `nix flake check`
 on every push and pull request. It creates placeholder files for the workspace
-input before evaluating and overrides it on the command line. The path
-`/home/vokrob` is hardcoded throughout that file, so replace it if you fork.
+input before evaluating and overrides it on the command line. It also installs
+Nix 2.34.8 explicitly, for the reason above; the `--override-input` on the
+workspace has no bearing on that lock error. The path `/home/vokrob` is
+hardcoded throughout that file, so replace it if you fork.
 
 ### Personalize
 
@@ -102,7 +112,9 @@ nix flake update openclaw-workspace --flake ~/nixos-config
 ### Secrets
 
 `secrets/*.age` in the repo are encrypted to my key. Create your own values, drop
-the shipped files, and re-encrypt all six entries listed in `secrets.nix`:
+the shipped files, and re-encrypt all six entries listed in `secrets.nix`. Also
+replace the recipient on line 2 of `secrets.nix` with the key from your own
+`age-key.txt`, otherwise agenix encrypts to the wrong key:
 
 ```bash
 # agenix reads ./secrets.nix relative to the cwd, so run from the repo root
