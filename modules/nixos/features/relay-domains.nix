@@ -29,4 +29,10 @@
   "alkalicore-pa.clients6.google.com"
   "waa-pa.clients6.google.com"
   "csp.withgoogle.com"
+  # AI Studio backends (ListModels RPCs and the webchannel); COMSS relays
+  # both via gemini-pool. Without relay DNS the app talks to the real Google
+  # IPs through the RU-geolocated WARP egress and fails with "Failed to list
+  # models: permission denied".
+  "alkalimakersuite-pa.clients6.google.com"
+  "webchannel-alkalimakersuite-pa.clients6.google.com"
 ]
