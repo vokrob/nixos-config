@@ -9,6 +9,7 @@
 [
   "claude.ai"
   "anthropic.com"
+  "openrouter.ai"
   "gemini.google.com"
   "aistudio.google.com"
   "generativelanguage.googleapis.com"
