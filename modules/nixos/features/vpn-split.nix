@@ -3,10 +3,16 @@
   pkgs,
   ...
 }: let
-  domains = [
-    "opencode.ai"
-    "api.opencode.ai"
-  ];
+  # opencode.ai's real addresses are unusable from the WARP egress, while the
+  # relay domains (see relay-domains.nix) resolve to COMSS SNI relays that are
+  # reachable directly. Both need /32 routes around awg0.
+  relayDomains = import ./relay-domains.nix;
+  domains =
+    [
+      "opencode.ai"
+      "api.opencode.ai"
+    ]
+    ++ relayDomains;
 
   sync = pkgs.writeShellApplication {
     name = "vpn-split-sync";
@@ -97,10 +103,12 @@ in {
     description = "Route ${lib.concatStringsSep ", " domains} around the AmneziaWG tunnel";
     after = [
       "amneziawg.service"
+      "dns-bypass.service"
       "network-online.target"
     ];
     wants = [
       "amneziawg.service"
+      "dns-bypass.service"
       "network-online.target"
     ];
     partOf = ["amneziawg.service"];
@@ -118,7 +126,10 @@ in {
 
   systemd.services.vpn-split-refresh = {
     description = "Refresh direct routes for ${lib.concatStringsSep ", " domains}";
-    after = ["amneziawg.service"];
+    after = [
+      "amneziawg.service"
+      "dns-bypass.service"
+    ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = lib.getExe sync;

@@ -40,4 +40,25 @@
       ExecStop = "${pkgs.amneziawg-tools}/bin/awg-quick down awg0";
     };
   };
+
+  # The WARP egress IPv6 gets abusively flagged by Google ("suspicious
+  # traffic") and mixed into sessions that otherwise use the COMSS relays,
+  # so all IPv6 egress stays disabled. It cannot be disabled through
+  # boot.kernel.sysctl globally: awg-quick would fail adding the IPv6
+  # address from the tunnel config and the tunnel would not come up.
+  systemd.services.awg-no-ipv6 = {
+    description = "Disable IPv6 on the AmneziaWG interface";
+    after = ["amneziawg.service"];
+    wants = ["amneziawg.service"];
+    wantedBy = [
+      "multi-user.target"
+      "amneziawg.service"
+    ];
+    partOf = ["amneziawg.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.procps}/bin/sysctl -w net.ipv6.conf.awg0.disable_ipv6=1";
+    };
+  };
 }

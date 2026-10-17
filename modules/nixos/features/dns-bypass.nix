@@ -13,16 +13,13 @@
     "195.133.25.16"
   ];
 
-  # Domains resolved via COMSS instead of the default 1.1.1.1.
-  # claude.com is deliberately absent: COMSS does not proxy it and the relay
-  # drops TLS connections with that SNI; the Claude web app talks to
-  # claude.ai/anthropic.com, which are covered here.
-  domains = [
-    "claude.ai"
-    "anthropic.com"
-    "gemini.google.com"
-    "aistudio.google.com"
-  ];
+  # Domains resolved via COMSS instead of the default 1.1.1.1. claude.com is
+  # deliberately absent: COMSS does not proxy it and the relay drops TLS
+  # connections with that SNI; the Claude web app talks to claude.ai and
+  # anthropic.com, which are covered here. The list is shared with
+  # vpn-split.nix, which routes the resulting relay addresses around the
+  # tunnel.
+  domains = import ./relay-domains.nix;
 
   routingDomains = map (domain: "~${domain}") domains;
 in {
