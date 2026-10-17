@@ -14,14 +14,6 @@
     "1.1.1.1"
     "8.8.8.8"
   ];
-  # COMSS gemini-pool SNI relays (end-to-end TLS with Google certificates).
-  # Direct Google IPs reject RU egress with "User location is not supported";
-  # COMSS DNS returns 3 pool IPs, one of them always failing - pin the two good ones.
-  networking.hosts = {
-    "157.22.178.170" = ["generativelanguage.googleapis.com"];
-    "132.243.112.221" = ["generativelanguage.googleapis.com"];
-  };
-
   services.resolved.enable = true;
   services.resolved.settings.Resolve.Domains = ["~speedtest.net"];
 }

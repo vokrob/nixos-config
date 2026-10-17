@@ -11,6 +11,7 @@
   "anthropic.com"
   "gemini.google.com"
   "aistudio.google.com"
+  "generativelanguage.googleapis.com"
   # Google endpoints the Gemini/AI web apps use for chat streaming and
   # sign-in flows; COMSS relays them via gemini-pool/ai-pool/flow-pool.
   "signaler-pa.clients6.google.com"
