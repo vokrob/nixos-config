@@ -1,4 +1,9 @@
 {pkgs, ...}: {
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true;
+  };
+
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
 

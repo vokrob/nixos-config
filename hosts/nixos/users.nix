@@ -2,7 +2,7 @@
   users.users."vokrob" = {
     isNormalUser = true;
     description = "Danil";
-    extraGroups = ["networkmanager" "wheel" "kvm"];
+    extraGroups = ["networkmanager" "wheel" "kvm" "docker"];
     shell = pkgs.zsh;
   };
 
