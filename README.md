@@ -15,7 +15,7 @@ OpenClaw, AmneziaWG, and gaming tools.
 - Waybar, SwayNC, Kitty, Rofi, Thunar, fastfetch
 - zsh + powerlevel10k, zoxide, fzf
 - Steam, GameMode, Gamescope, MangoHud
-- agenix, AmneziaWG
+- Docker, agenix, AmneziaWG
 - wakatime, Codestats, Gemini API keys
 - nvim, opencode
 - OpenClaw (Telegram gateway)
