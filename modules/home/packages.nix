@@ -45,6 +45,8 @@
     vscode
     android-studio
     android-tools
+    blender_4
+    godot
 
     (writeShellScriptBin "rec-toggle" ''
       SINK_ID=$(wpctl status | grep -A20 'Sinks:' | grep '\*' | grep -oP '\s+\*\s+\K\d+')

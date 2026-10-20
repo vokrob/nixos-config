@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs-blender.url = "github:NixOS/nixpkgs/nixos-25.05";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
@@ -17,6 +18,7 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-blender,
     home-manager,
     agenix,
     nix-openclaw,
@@ -31,6 +33,13 @@
       modules = [
         home-manager.nixosModules.home-manager
         agenix.nixosModules.default
+        {
+          nixpkgs.overlays = [
+            (final: prev: {
+              blender_4 = nixpkgs-blender.legacyPackages.${final.stdenv.hostPlatform.system}.blender;
+            })
+          ];
+        }
         ./hosts/nixos
       ];
     };
