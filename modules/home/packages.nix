@@ -45,7 +45,7 @@
     vscode
     android-studio
     android-tools
-    blender_4
+    blender
     godot
 
     (writeShellScriptBin "rec-toggle" ''

@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
-    nixpkgs-blender.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-blender.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
@@ -36,7 +36,8 @@
         {
           nixpkgs.overlays = [
             (final: prev: {
-              blender_4 = nixpkgs-blender.legacyPackages.${final.stdenv.hostPlatform.system}.blender;
+              blender = nixpkgs-blender.legacyPackages.${final.stdenv.hostPlatform.system}.blender;
+              godot = nixpkgs-blender.legacyPackages.${final.stdenv.hostPlatform.system}.godot;
             })
           ];
         }
