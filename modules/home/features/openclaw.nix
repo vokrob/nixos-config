@@ -31,6 +31,9 @@
         allowFrom = [5748618304];
       };
       models.providers.google = {
+        # The relay can take longer than the 120 s default idle watchdog;
+        # allow up to 300 s (agents.defaults.timeoutSeconds stays at 600 s).
+        timeoutSeconds = 300;
         apiKey = {
           source = "env";
           provider = "default";
