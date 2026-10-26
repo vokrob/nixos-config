@@ -61,4 +61,38 @@
       ExecStart = "${pkgs.procps}/bin/sysctl -w net.ipv6.conf.awg0.disable_ipv6=1";
     };
   };
+
+  # The AmneziaWG config ships COMSS resolvers and sets them on awg0 with
+  # ~., so systemd-resolved sends every query to them. They intermittently
+  # time out (uncached drive.google.com took 5-30 s), and COMSS is only
+  # needed for the relay domains that dns-bypass.nix already routes to its
+  # own dummy link. Keep normal DNS for everything else.
+  systemd.services.awg-dns = {
+    description = "Use normal DNS on the AmneziaWG interface";
+    after = [
+      "amneziawg.service"
+      "systemd-resolved.service"
+    ];
+    wants = [
+      "amneziawg.service"
+      "systemd-resolved.service"
+    ];
+    wantedBy = [
+      "multi-user.target"
+      "amneziawg.service"
+    ];
+    partOf = [
+      "amneziawg.service"
+      "systemd-resolved.service"
+    ];
+    script = ''
+      ${pkgs.systemd}/bin/resolvectl dns awg0 1.1.1.1 8.8.8.8
+      ${pkgs.systemd}/bin/resolvectl domain awg0 '~.'
+      ${pkgs.systemd}/bin/resolvectl flush-caches
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+  };
 }
