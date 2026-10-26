@@ -17,17 +17,20 @@
   # COMSS SNI relay (end-to-end TLS with Google certificates). The WARP
   # egress is geolocated to RU and the real Google IPs are rejected with
   # "User location is not supported"; COMSS DNS maps these hosts to
-  # gemini-pool, which is live again. The ai-pool members 80.74.30.162 and
-  # 176.12.72.184 are geo-rejected and 85.137.95.145 no longer answers, so
-  # pin the Google AI hosts to the live gemini-pool member 199.189.253.237.
-  # labs.google stays on COMSS DNS because this relay does not serve its
-  # SNI. vpn-split.nix adds the relay's /32 route around awg0 via getent.
+  # gemini-pool. The ai-pool members 80.74.30.162 and 176.12.72.184 are
+  # geo-rejected and 85.137.95.145 no longer answers, so pin the Google AI
+  # hosts to the live gemini-pool member 206.223.250.249. The previous pin,
+  # 199.189.253.237, still answers ping but no longer accepts TCP/443, which
+  # also broke Drive through the pinned apis.google.com. The other live
+  # member is 206.223.247.81. labs.google stays on COMSS DNS because this
+  # relay does not serve its SNI. vpn-split.nix adds the relay's /32 route
+  # around awg0 via getent.
   #
   # Health check (the pin makes the request take the relay path):
   #   curl -fsS -H "x-goog-api-key: $(cat /run/agenix/gemini-api-key)" \
   #     https://generativelanguage.googleapis.com/v1beta/models >/dev/null
   networking.hosts = {
-    "199.189.253.237" = [
+    "206.223.250.249" = [
       "generativelanguage.googleapis.com"
       "aistudio.google.com"
       "gemini.google.com"
