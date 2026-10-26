@@ -82,6 +82,7 @@
     lua-language-server
     nil
     pyright
+    python3
     rust-analyzer
     typescript-language-server
     gopls
