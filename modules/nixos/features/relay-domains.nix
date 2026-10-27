@@ -2,14 +2,15 @@
 # answers with CNAMEs pointing at its SNI relays (ai-pool/gemini-pool/
 # flow-pool.comss.one, NL), which the web apps accept while the real
 # Google/Anthropic addresses do not (the WARP tunnel egress geolocates to RU).
-# The ai-pool members are currently geo-rejected, so the Google AI hosts
-# below are pinned to the live gemini-pool member in networking.nix;
-# labs.google remains on COMSS DNS because that relay does not serve its
-# SNI.
+# The Google AI hosts are pinned in networking.nix: the web/AI hosts to an
+# ai-pool member, and generativelanguage.googleapis.com to gemini-pool via
+# WARP (vpn-split.nix leaves that one out of the direct routes). labs.google
+# remains on COMSS DNS because those relays do not serve its SNI.
 #
 # vpn-split.nix also imports this list so the resulting relay addresses get
 # /32 routes around awg0: bulk transfers to the relays through the WARP path
-# collapse to ~5 KB/s versus ~150 KB/s on the direct path.
+# collapse to ~5 KB/s versus ~150 KB/s on the direct path. The
+# generativelanguage exception above stays on WARP.
 [
   "claude.ai"
   "anthropic.com"
