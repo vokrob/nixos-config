@@ -7,10 +7,13 @@
   # SNI relays (ai-pool/gemini-pool/flow-pool.comss.one, NL). The AmneziaWG
   # tunnel egress (Cloudflare WARP) is geolocated to RU, so real Google and
   # Anthropic IPs are rejected by the web apps, while the relays work.
+  # 83.220.169.155 drops a large share of UDP queries and does not answer
+  # on TCP/53, so systemd-resolved degrades it and stalls cold lookups for
+  # seconds; the other two answer on both transports. Keep the most
+  # reliable server first.
   bypassDns = [
-    "83.220.169.155"
-    "212.109.195.93"
     "195.133.25.16"
+    "212.109.195.93"
   ];
 
   # Domains resolved via COMSS instead of the default 1.1.1.1. claude.com is
