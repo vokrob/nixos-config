@@ -27,6 +27,14 @@
   # real Google IPs, so the pins stay necessary. labs.google stays on COMSS
   # DNS because these relays do not serve its SNI.
   #
+  # The Claude web app loads 85 of the 89 assets on /new from
+  # assets-proxy.anthropic.com. COMSS returns the three ai-pool members in
+  # rotating order, and 176.12.72.184 is several times faster than
+  # 157.22.178.170 (330 KB/s versus 74 KB/s for a 530 KB bundle), so pin the
+  # Claude hosts to the same member and keep them off COMSS DNS entirely.
+  # claude.com is deliberately absent: the relay drops TLS connections with
+  # that SNI.
+  #
   # Health check (the pin keeps the request on the relay):
   #   curl -fsS -H "x-goog-api-key: $(cat /run/agenix/gemini-api-key)" \
   #     https://generativelanguage.googleapis.com/v1beta/models >/dev/null
@@ -47,6 +55,12 @@
       "bard.google.com"
       "notebooklm.google.com"
       "signaler-pa.clients6.google.com"
+      "claude.ai"
+      "anthropic.com"
+      "assets-proxy.anthropic.com"
+      "assets.claude.ai"
+      "api.anthropic.com"
+      "statsig.anthropic.com"
     ];
     "206.223.247.81" = ["generativelanguage.googleapis.com"];
   };
