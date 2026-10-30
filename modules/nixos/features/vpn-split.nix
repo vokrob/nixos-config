@@ -3,19 +3,15 @@
   pkgs,
   ...
 }: let
-  # opencode.ai's real addresses are unusable from the WARP egress, while the
-  # relay domains (see relay-domains.nix) resolve to COMSS SNI relays that are
-  # reachable directly. Both need /32 routes around awg0. The exception is
-  # generativelanguage.googleapis.com: its gemini-pool pin only answers via
-  # WARP, so keep it out of the direct routes (see networking.nix).
+  # The relay domains (see relay-domains.nix) resolve to COMSS SNI relays that
+  # are reachable directly and need /32 routes around awg0. opencode.ai stays
+  # on WARP: the ISP silently drops TLS to its Cloudflare addresses, while the
+  # tunnel serves them fine. The exception is generativelanguage.googleapis.com:
+  # its gemini-pool pin only answers via WARP, so keep it out of the direct
+  # routes (see networking.nix).
   relayDomains = import ./relay-domains.nix;
   tunnelOnlyDomains = ["generativelanguage.googleapis.com"];
-  domains =
-    [
-      "opencode.ai"
-      "api.opencode.ai"
-    ]
-    ++ lib.subtractLists tunnelOnlyDomains relayDomains;
+  domains = lib.subtractLists tunnelOnlyDomains relayDomains;
 
   sync = pkgs.writeShellApplication {
     name = "vpn-split-sync";
