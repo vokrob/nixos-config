@@ -16,8 +16,10 @@
   pref = 32763;
 
   # Addresses that must stay on the tunnel even if the RU list starts covering
-  # them. mafioznik's DNS returns these proxy ranges for the Gemini hosts; they
-  # are only reachable through WARP.
+  # them. mafioznik's DNS returns these proxy ranges for Gemini and
+  # opencode.ai; they are only reachable through WARP. The live proxy is
+  # pinned in networking.nix, and both ranges stay on the tunnel so a future
+  # repin to any member keeps working.
   tunnelExceptions = [
     "193.233.112.0/23"
     "159.194.200.0/24"

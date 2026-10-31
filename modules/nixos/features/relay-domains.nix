@@ -1,7 +1,7 @@
 # Domains resolved through the COMSS relay DNS by dns-bypass.nix and routed
 # directly around awg0 by vpn-split.nix. Gemini/Google AI hosts are
-# deliberately absent: they use the WARP profile DNS (see vpn.nix) and stay on
-# awg0, matching the phone setup.
+# deliberately absent: they are pinned to the live mafioznik proxy in
+# networking.nix and stay on awg0.
 [
   "claude.ai"
   "anthropic.com"

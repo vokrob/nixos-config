@@ -7,7 +7,8 @@
   # CNAMEs pointing at its SNI relays (ai-pool/flow-pool.comss.one, NL). The
   # AmneziaWG tunnel egress (Cloudflare WARP) is geolocated to RU, so the real
   # Anthropic IPs are rejected by the web apps, while the relays work. Gemini
-  # is not here: it uses the WARP profile DNS and stays on awg0.
+  # is not here: its hosts are pinned to the live mafioznik proxy in
+  # networking.nix and stay on awg0.
   # 83.220.169.155 drops a large share of UDP queries and does not answer
   # on TCP/53, so systemd-resolved degrades it and stalls cold lookups for
   # seconds; the other two answer on both transports. Keep the most

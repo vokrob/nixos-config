@@ -15,6 +15,14 @@
     "signaler-pa.clients6.google.com"
     "labs.google"
   ];
+
+  # mafioznik maps opencode.ai to the same proxy pool, but the resolver
+  # returns the dead members first, so OpenCode stalls on them before
+  # reaching the live one. Pin it to the working proxy too.
+  opencodeHosts = [
+    "opencode.ai"
+    "api.opencode.ai"
+  ];
 in {
   networking.networkmanager.enable = true;
   networking.networkmanager.dispatcherScripts = [
@@ -31,21 +39,22 @@ in {
     "1.1.1.1"
     "8.8.8.8"
   ];
-  # Claude/OpenRouter hosts stay pinned to the fast COMSS ai-pool member:
-  # COMSS DNS rotates between three relays, and 176.12.72.184 is several
-  # times faster than 157.22.178.170 (330 KB/s versus 74 KB/s for a 530 KB
-  # bundle).
+  # Claude hosts stay pinned to the fastest live COMSS ai-pool member. COMSS
+  # DNS rotates between four relays; 176.12.72.184 stopped answering TCP on
+  # 443, while 157.22.178.170 does (TLS ~0.2 s; .234 ~0.5 s, .18 ~1.5 s).
+  # Pinning one relay avoids the DNS rotation handing out dead addresses.
   #
   # mafioznik DNS (the WARP profile DNS) returns four proxies for the Gemini
-  # hosts. The .67/.68 members are unreachable through this PC's WARP egress,
-  # so pin the two that work to keep Gemini from stalling on dead addresses.
+  # hosts and opencode.ai. Only 159.194.200.33 completes TLS through this PC's
+  # WARP egress; .67/.68/.88 accept TCP and then stall for 15-20 s. Pin the
+  # live proxy so browsers and OpenCode never pick a dead address.
   # geo-split.nix routes both proxy ranges through awg0.
   #
   # Gemini API health check:
   #   curl -fsS -H "x-goog-api-key: $(cat /run/agenix/gemini-api-key)" \
   #     https://generativelanguage.googleapis.com/v1beta/models >/dev/null
   networking.hosts = {
-    "176.12.72.184" = [
+    "157.22.178.170" = [
       "claude.ai"
       "anthropic.com"
       "assets-proxy.anthropic.com"
@@ -53,8 +62,7 @@ in {
       "api.anthropic.com"
       "statsig.anthropic.com"
     ];
-    "193.233.112.88" = geminiHosts;
-    "159.194.200.33" = geminiHosts;
+    "159.194.200.33" = geminiHosts ++ opencodeHosts;
   };
   services.resolved.enable = true;
   services.resolved.settings.Resolve.Domains = ["~speedtest.net"];

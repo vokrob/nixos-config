@@ -62,7 +62,38 @@
     };
   };
 
-  # Keep the WARP profile's own DNS on awg0: mafioznik resolves the Gemini
-  # hosts to its proxy ranges, which geo-split.nix routes through the tunnel.
-  # Claude relay domains are handled separately by dns-bypass.nix.
+  # The AmneziaWG profile ships two mafioznik resolvers and sets them on awg0
+  # with ~., so systemd-resolved sends every query to them. 103.27.157.100
+  # silently drops UDP and TCP queries, which stalls cold lookups for ~15 s
+  # while resolved retries it. Keep the working mafioznik resolver first (it
+  # still maps Gemini hosts to their proxies for anything not pinned in
+  # networking.nix), with the public resolvers as a fallback.
+  systemd.services.awg-dns = {
+    description = "Use the working mafioznik resolver on the AmneziaWG interface";
+    after = [
+      "amneziawg.service"
+      "systemd-resolved.service"
+    ];
+    wants = [
+      "amneziawg.service"
+      "systemd-resolved.service"
+    ];
+    wantedBy = [
+      "multi-user.target"
+      "amneziawg.service"
+    ];
+    partOf = [
+      "amneziawg.service"
+      "systemd-resolved.service"
+    ];
+    script = ''
+      ${pkgs.systemd}/bin/resolvectl dns awg0 103.27.157.38 1.1.1.1 8.8.8.8
+      ${pkgs.systemd}/bin/resolvectl domain awg0 '~.'
+      ${pkgs.systemd}/bin/resolvectl flush-caches
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+  };
 }
