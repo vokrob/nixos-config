@@ -1,4 +1,21 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  geminiHosts = [
+    "gemini.google.com"
+    "aistudio.google.com"
+    "generativelanguage.googleapis.com"
+    "alkalimakersuite-pa.clients6.google.com"
+    "webchannel-alkalimakersuite-pa.clients6.google.com"
+    "proactivebackend-pa.googleapis.com"
+    "alkalicore-pa.clients6.google.com"
+    "waa-pa.clients6.google.com"
+    "apis.google.com"
+    "ai.google.dev"
+    "bard.google.com"
+    "notebooklm.google.com"
+    "signaler-pa.clients6.google.com"
+    "labs.google"
+  ];
+in {
   networking.networkmanager.enable = true;
   networking.networkmanager.dispatcherScripts = [
     {
@@ -14,47 +31,21 @@
     "1.1.1.1"
     "8.8.8.8"
   ];
-  # COMSS SNI relay (end-to-end TLS with Google certificates). The WARP
-  # egress is geolocated to RU and the real Google IPs are rejected with
-  # "User location is not supported"; COMSS DNS maps these hosts to its
-  # relays. The web/AI hosts go to the ai-pool member 176.12.72.184, which
-  # serves them on both the direct path and WARP. The API endpoint is
-  # pinned separately to the gemini-pool member 206.223.247.81, whose WARP
-  # path is not geo-rejected: ai-pool .184/.170 answer the API with "User
-  # location is not supported", and .251.18 is slow. .247.81 drops direct
-  # connections, so vpn-split.nix excludes generativelanguage from its /32
-  # routes and that pin stays on awg0. COMSS now answers gemini-pool with
-  # real Google IPs, so the pins stay necessary. labs.google stays on COMSS
-  # DNS because these relays do not serve its SNI.
+  # Claude/OpenRouter hosts stay pinned to the fast COMSS ai-pool member:
+  # COMSS DNS rotates between three relays, and 176.12.72.184 is several
+  # times faster than 157.22.178.170 (330 KB/s versus 74 KB/s for a 530 KB
+  # bundle).
   #
-  # The Claude web app loads 85 of the 89 assets on /new from
-  # assets-proxy.anthropic.com. COMSS returns the three ai-pool members in
-  # rotating order, and 176.12.72.184 is several times faster than
-  # 157.22.178.170 (330 KB/s versus 74 KB/s for a 530 KB bundle), so pin the
-  # Claude hosts to the same member and keep them off COMSS DNS entirely.
-  # claude.com is deliberately absent: the relay drops TLS connections with
-  # that SNI.
+  # mafioznik DNS (the WARP profile DNS) returns four proxies for the Gemini
+  # hosts. The .67/.68 members are unreachable through this PC's WARP egress,
+  # so pin the two that work to keep Gemini from stalling on dead addresses.
+  # geo-split.nix routes both proxy ranges through awg0.
   #
-  # Health check (the pin keeps the request on the relay):
+  # Gemini API health check:
   #   curl -fsS -H "x-goog-api-key: $(cat /run/agenix/gemini-api-key)" \
   #     https://generativelanguage.googleapis.com/v1beta/models >/dev/null
   networking.hosts = {
     "176.12.72.184" = [
-      "aistudio.google.com"
-      "gemini.google.com"
-      "alkalimakersuite-pa.clients6.google.com"
-      "webchannel-alkalimakersuite-pa.clients6.google.com"
-      "ogads-pa.clients6.google.com"
-      "jnn-pa.googleapis.com"
-      "proactivebackend-pa.googleapis.com"
-      "alkalicore-pa.clients6.google.com"
-      "waa-pa.clients6.google.com"
-      "apis.google.com"
-      "ai.google.dev"
-      "csp.withgoogle.com"
-      "bard.google.com"
-      "notebooklm.google.com"
-      "signaler-pa.clients6.google.com"
       "claude.ai"
       "anthropic.com"
       "assets-proxy.anthropic.com"
@@ -62,7 +53,8 @@
       "api.anthropic.com"
       "statsig.anthropic.com"
     ];
-    "206.223.247.81" = ["generativelanguage.googleapis.com"];
+    "193.233.112.88" = geminiHosts;
+    "159.194.200.33" = geminiHosts;
   };
   services.resolved.enable = true;
   services.resolved.settings.Resolve.Domains = ["~speedtest.net"];

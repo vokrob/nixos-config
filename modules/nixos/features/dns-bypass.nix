@@ -3,10 +3,11 @@
   pkgs,
   ...
 }: let
-  # COMSS.ONE bypass DNS: for blocked services it returns CNAMEs pointing at
-  # SNI relays (ai-pool/gemini-pool/flow-pool.comss.one, NL). The AmneziaWG
-  # tunnel egress (Cloudflare WARP) is geolocated to RU, so real Google and
-  # Anthropic IPs are rejected by the web apps, while the relays work.
+  # COMSS.ONE bypass DNS for the Claude/OpenRouter relay domains: it returns
+  # CNAMEs pointing at its SNI relays (ai-pool/flow-pool.comss.one, NL). The
+  # AmneziaWG tunnel egress (Cloudflare WARP) is geolocated to RU, so the real
+  # Anthropic IPs are rejected by the web apps, while the relays work. Gemini
+  # is not here: it uses the WARP profile DNS and stays on awg0.
   # 83.220.169.155 drops a large share of UDP queries and does not answer
   # on TCP/53, so systemd-resolved degrades it and stalls cold lookups for
   # seconds; the other two answer on both transports. Keep the most
@@ -16,7 +17,7 @@
     "212.109.195.93"
   ];
 
-  # Domains resolved via COMSS instead of the default 1.1.1.1. claude.com is
+  # Domains resolved via COMSS instead of the WARP profile DNS. claude.com is
   # deliberately absent: COMSS does not proxy it and the relay drops TLS
   # connections with that SNI; the Claude web app talks to claude.ai and
   # anthropic.com, which are covered here. The list is shared with

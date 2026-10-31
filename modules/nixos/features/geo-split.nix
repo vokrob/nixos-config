@@ -16,9 +16,12 @@
   pref = 32763;
 
   # Addresses that must stay on the tunnel even if the RU list starts covering
-  # them. generativelanguage.googleapis.com is pinned to this COMSS
-  # gemini-pool member, which only works through WARP.
-  tunnelExceptions = ["206.223.247.81"];
+  # them. mafioznik's DNS returns these proxy ranges for the Gemini hosts; they
+  # are only reachable through WARP.
+  tunnelExceptions = [
+    "193.233.112.0/23"
+    "159.194.200.0/24"
+  ];
 
   sync = pkgs.writeShellApplication {
     name = "geo-split-sync";
@@ -80,7 +83,7 @@
 
       # shellcheck disable=SC2043
       for addr in ${lib.escapeShellArgs tunnelExceptions}; do
-        ip -4 route replace "$addr/32" dev awg0 table "$TABLE"
+        ip -4 route replace "$addr" dev awg0 table "$TABLE"
       done
     '';
   };
