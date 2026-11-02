@@ -26,9 +26,16 @@ in {
     "8.8.8.8"
   ];
   # Claude hosts stay pinned to the fastest live COMSS ai-pool member. COMSS
-  # DNS rotates between four relays; 176.12.72.184 stopped answering TCP on
-  # 443, while 157.22.178.170 does (TLS ~0.2 s; .234 ~0.5 s, .18 ~1.5 s).
-  # Pinning one relay avoids the DNS rotation handing out dead addresses.
+  # DNS rotates between four relays; 157.22.178.170 dropped out of the pool
+  # and accepts TCP but never completes the TLS handshake, which stalled every
+  # Claude page. Current live members are 199.189.255.234, 206.223.246.75,
+  # 157.22.181.209 and 206.223.251.18 (TLS ~0.4-1.0 s). Pinning one relay
+  # avoids the DNS rotation handing out stale addresses.
+  #
+  # Relay health check (403 is Cloudflare's challenge and means TLS works;
+  # a timeout means the relay is dead):
+  #   curl -sS -o /dev/null -w '%{http_code} %{time_total}\n' \
+  #     --resolve claude.ai:443:<relay> --max-time 5 https://claude.ai/new
   #
   # Gemini web is deliberately not pinned. The mafioznik DNS/proxy scheme that
   # used to serve it is dead, and pinning the web hosts to an SNI relay makes
@@ -50,7 +57,7 @@ in {
   #   curl -fsS -H "x-goog-api-key: $(cat /run/agenix/gemini-api-key)" \
   #     https://generativelanguage.googleapis.com/v1beta/models >/dev/null
   networking.hosts = {
-    "157.22.178.170" = [
+    "206.223.246.75" = [
       "claude.ai"
       "anthropic.com"
       "assets-proxy.anthropic.com"
