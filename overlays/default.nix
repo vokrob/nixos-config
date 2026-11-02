@@ -3,6 +3,9 @@ final: prev: {
     patches = (old.patches or []) ++ [../patches/swaync-remove-close-button.patch];
   });
 
+  anylogic-unwrapped = final.callPackage ../pkgs/anylogic/unwrapped.nix {};
+  anylogic = final.callPackage ../pkgs/anylogic {inherit (final) anylogic-unwrapped;};
+
   vimPlugins =
     prev.vimPlugins
     // {
