@@ -4,9 +4,9 @@
   ...
 }: let
   # The relay domains (see relay-domains.nix) resolve to COMSS SNI relays that
-  # are reachable directly and need /32 routes around awg0. Gemini and
-  # opencode.ai are not in the relay list: they are pinned to the live
-  # mafioznik proxy in networking.nix and stay on awg0.
+  # are reachable directly and need /32 routes around awg0. Gemini web hosts
+  # use normal DNS; only its API host is pinned to the COMSS relay in
+  # networking.nix and stays on awg0.
   relayDomains = import ./relay-domains.nix;
   domains = relayDomains;
 

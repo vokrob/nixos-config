@@ -1,27 +1,13 @@
 {pkgs, ...}: let
-  geminiHosts = [
-    "gemini.google.com"
+  aiStudioHosts = [
     "aistudio.google.com"
-    "generativelanguage.googleapis.com"
     "alkalimakersuite-pa.clients6.google.com"
     "webchannel-alkalimakersuite-pa.clients6.google.com"
-    "proactivebackend-pa.googleapis.com"
     "alkalicore-pa.clients6.google.com"
     "waa-pa.clients6.google.com"
-    "apis.google.com"
-    "ai.google.dev"
-    "bard.google.com"
-    "notebooklm.google.com"
+    "proactivebackend-pa.googleapis.com"
     "signaler-pa.clients6.google.com"
-    "labs.google"
-  ];
-
-  # mafioznik maps opencode.ai to the same proxy pool, but the resolver
-  # returns the dead members first, so OpenCode stalls on them before
-  # reaching the live one. Pin it to the working proxy too.
-  opencodeHosts = [
-    "opencode.ai"
-    "api.opencode.ai"
+    "generativelanguage.googleapis.com"
   ];
 in {
   networking.networkmanager.enable = true;
@@ -44,11 +30,21 @@ in {
   # 443, while 157.22.178.170 does (TLS ~0.2 s; .234 ~0.5 s, .18 ~1.5 s).
   # Pinning one relay avoids the DNS rotation handing out dead addresses.
   #
-  # mafioznik DNS (the WARP profile DNS) returns four proxies for the Gemini
-  # hosts and opencode.ai. Only 159.194.200.33 completes TLS through this PC's
-  # WARP egress; .67/.68/.88 accept TCP and then stall for 15-20 s. Pin the
-  # live proxy so browsers and OpenCode never pick a dead address.
-  # geo-split.nix routes both proxy ranges through awg0.
+  # Gemini web is deliberately not pinned. The mafioznik DNS/proxy scheme that
+  # used to serve it is dead, and pinning the web hosts to an SNI relay makes
+  # Google see two egress IPs (WARP plus the relay) and return its "suspicious
+  # traffic" page. Direct WARP access is clean but geo-blocked.
+  #
+  # AI Studio and its Gemini backend hosts are pinned to the live COMSS
+  # gemini-pool relay: WARP egress is geolocated to RU, which AI Studio treats
+  # as an unsupported region, while 206.223.250.249 serves the app from a
+  # supported region and also serves generativelanguage.googleapis.com (~1 s).
+  # Hosts the relay does not proxy (accounts.google.com, gstatic,
+  # cloudconsole-pa) stay on normal DNS and WARP.
+  #
+  # opencode.ai and api.opencode.ai are deliberately absent: they resolve via
+  # normal DNS to Cloudflare and must work with and without the tunnel. Pinning
+  # them here to a Gemini proxy broke every OpenCode model.
   #
   # Gemini API health check:
   #   curl -fsS -H "x-goog-api-key: $(cat /run/agenix/gemini-api-key)" \
@@ -62,7 +58,7 @@ in {
       "api.anthropic.com"
       "statsig.anthropic.com"
     ];
-    "159.194.200.33" = geminiHosts ++ opencodeHosts;
+    "206.223.250.249" = aiStudioHosts;
   };
   services.resolved.enable = true;
   services.resolved.settings.Resolve.Domains = ["~speedtest.net"];

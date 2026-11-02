@@ -63,13 +63,11 @@
   };
 
   # The AmneziaWG profile ships two mafioznik resolvers and sets them on awg0
-  # with ~., so systemd-resolved sends every query to them. 103.27.157.100
-  # silently drops UDP and TCP queries, which stalls cold lookups for ~15 s
-  # while resolved retries it. Keep the working mafioznik resolver first (it
-  # still maps Gemini hosts to their proxies for anything not pinned in
-  # networking.nix), with the public resolvers as a fallback.
+  # with ~., so systemd-resolved sends every query to them. Both are gone:
+  # 103.27.157.38 drops queries and 103.27.157.100 now serves an unrelated
+  # site. Use the public resolvers instead.
   systemd.services.awg-dns = {
-    description = "Use the working mafioznik resolver on the AmneziaWG interface";
+    description = "Use public resolvers on the AmneziaWG interface";
     after = [
       "amneziawg.service"
       "systemd-resolved.service"
@@ -87,7 +85,7 @@
       "systemd-resolved.service"
     ];
     script = ''
-      ${pkgs.systemd}/bin/resolvectl dns awg0 103.27.157.38 1.1.1.1 8.8.8.8
+      ${pkgs.systemd}/bin/resolvectl dns awg0 1.1.1.1 8.8.8.8
       ${pkgs.systemd}/bin/resolvectl domain awg0 '~.'
       ${pkgs.systemd}/bin/resolvectl flush-caches
     '';
