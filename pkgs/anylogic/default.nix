@@ -20,6 +20,7 @@
     export SWT_GTK3=0
     export UBUNTU_MENUPROXY=
     export GDK_BACKEND=x11
+    export LD_LIBRARY_PATH="/usr/lib64:/usr/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
     export GDK_PIXBUF_MODULE_FILE=/usr/lib64/gdk-pixbuf-2.0/2.10.0/loaders.cache
     export GDK_PIXBUF_MODULEDIR=/usr/lib64/gdk-pixbuf-2.0/2.10.0/loaders
     export _JAVA_AWT_WM_NONREPARENTING=1
@@ -41,6 +42,7 @@ in
         cairo
         cups
         dbus
+        expat
         fontconfig
         freetype
         gdk-pixbuf
@@ -64,6 +66,7 @@ in
         libXtst
         libXxf86vm
         libdrm
+        libxcb
         libgbm
         libpulseaudio
         librsvg
@@ -75,6 +78,7 @@ in
         nss
         pango
         shared-mime-info
+        udev
         util-linux
         webkitgtk_4_1
         xdg-utils
