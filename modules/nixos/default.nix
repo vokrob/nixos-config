@@ -7,6 +7,7 @@
     ./features/vpn.nix
     ./features/vpn-split.nix
     ./features/geo-split.nix
+    ./features/magicdns.nix
     ./features/dns-bypass.nix
   ];
 }

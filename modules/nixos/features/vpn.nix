@@ -65,7 +65,8 @@
   # The AmneziaWG profile ships two mafioznik resolvers and sets them on awg0
   # with ~., so systemd-resolved sends every query to them. Both are gone:
   # 103.27.157.38 drops queries and 103.27.157.100 now serves an unrelated
-  # site. Use the public resolvers instead.
+  # site. Use the public resolvers instead; the scoped MagicDNS domains from
+  # features/magicdns.nix take precedence with more specific routing domains.
   systemd.services.awg-dns = {
     description = "Use public resolvers on the AmneziaWG interface";
     after = [

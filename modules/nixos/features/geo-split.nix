@@ -15,11 +15,6 @@
   table = 51900;
   pref = 32763;
 
-  # Address that must stay on the tunnel even if the RU list starts covering
-  # it. The COMSS relay serves the pinned Gemini API host and is only reachable
-  # through WARP.
-  tunnelExceptions = ["206.223.250.249"];
-
   sync = pkgs.writeShellApplication {
     name = "geo-split-sync";
     runtimeInputs = with pkgs; [
@@ -77,11 +72,6 @@
         '{ print "route replace " $1 " via " gw " dev " dev " table " table }' \
         ${geoipList} |
         ip -4 -batch -
-
-      # shellcheck disable=SC2043
-      for addr in ${lib.escapeShellArgs tunnelExceptions}; do
-        ip -4 route replace "$addr" dev awg0 table "$TABLE"
-      done
     '';
   };
 in {

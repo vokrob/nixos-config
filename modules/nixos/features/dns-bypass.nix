@@ -3,12 +3,11 @@
   pkgs,
   ...
 }: let
-  # COMSS.ONE bypass DNS for the Claude/OpenRouter relay domains: it returns
-  # CNAMEs pointing at its SNI relays (ai-pool/flow-pool.comss.one, NL). The
-  # AmneziaWG tunnel egress (Cloudflare WARP) is geolocated to RU, so the real
-  # Anthropic IPs are rejected by the web apps, while the relays work. Gemini
-  # is not here: its hosts are pinned to the live mafioznik proxy in
-  # networking.nix and stay on awg0.
+  # COMSS.ONE bypass DNS for OpenRouter: it returns CNAMEs pointing at its SNI
+  # relays (ai-pool/flow-pool.comss.one, NL). The AmneziaWG tunnel egress
+  # (Cloudflare WARP) is geolocated to RU, so OpenRouter's real Cloudflare
+  # addresses are rejected with 403, while the relay works. All other AI and
+  # gaming services are handled by MagicDNS on a separate scoped link.
   # 83.220.169.155 drops a large share of UDP queries and does not answer
   # on TCP/53, so systemd-resolved degrades it and stalls cold lookups for
   # seconds; the other two answer on both transports. Keep the most
@@ -18,10 +17,7 @@
     "212.109.195.93"
   ];
 
-  # Domains resolved via COMSS instead of the WARP profile DNS. claude.com is
-  # deliberately absent: COMSS does not proxy it and the relay drops TLS
-  # connections with that SNI; the Claude web app talks to claude.ai and
-  # anthropic.com, which are covered here. The list is shared with
+  # Domains resolved via COMSS instead of MagicDNS. The list is shared with
   # vpn-split.nix, which routes the resulting relay addresses around the
   # tunnel.
   domains = import ./relay-domains.nix;
@@ -56,6 +52,8 @@ in {
       ip addr replace fd42:42:42::1/128 dev bypassdns nodad
       resolvectl dns bypassdns ${lib.escapeShellArgs bypassDns}
       resolvectl domain bypassdns ${lib.escapeShellArgs routingDomains}
+      # Keep COMSS on plain DNS; the global resolvers are plain as well.
+      resolvectl dnsovertls bypassdns no
       resolvectl flush-caches
     '';
   };

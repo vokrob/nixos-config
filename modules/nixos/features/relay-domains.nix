@@ -1,9 +1,8 @@
 # Domains resolved through the COMSS relay DNS by dns-bypass.nix and routed
-# directly around awg0 by vpn-split.nix. Gemini/Google AI hosts are
-# deliberately absent: they are pinned to the live mafioznik proxy in
-# networking.nix and stay on awg0.
+# directly around awg0 by vpn-split.nix. OpenRouter is not proxied by MagicDNS:
+# its real Cloudflare addresses return 403 through WARP, while the COMSS relay
+# works. Claude, Gemini, ChatGPT/OpenAI, Midjourney, Copilot, Xbox and
+# PlayStation are handled by the scoped MagicDNS link instead.
 [
-  "claude.ai"
-  "anthropic.com"
   "openrouter.ai"
 ]
