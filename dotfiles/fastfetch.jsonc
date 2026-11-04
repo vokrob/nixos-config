@@ -7,13 +7,13 @@
         "separator": ": "
     },
     "modules": [
-	"title",
-        "break",
+  "break",
 	"os",
         "wm",
         "terminal",
         "shell",
         "uptime",
-	"break"
+  "break",
+  "break"
     ]
 }
