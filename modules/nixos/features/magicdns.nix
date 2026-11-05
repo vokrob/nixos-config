@@ -3,14 +3,16 @@
   pkgs,
   ...
 }: let
-  # MagicDNS returns SNI gateway addresses for Claude, Gemini/AI Studio,
-  # ChatGPT/OpenAI, Midjourney, Copilot and PlayStation, which work from the
-  # RU-geolocated WARP egress. Xbox resolves to normal Microsoft addresses but
-  # benefits from clean MagicDNS answers. Only these domains use it; everything
-  # else keeps the public resolvers from networking.nix.
+  # MagicDNS returns SNI gateway addresses for the AI services and gaming
+  # platforms listed on magicdns.ru, which work from the RU-geolocated WARP
+  # egress. Xbox resolves to normal Microsoft addresses but benefits from clean
+  # MagicDNS answers. Only these domains use it; everything else keeps the
+  # public resolvers from networking.nix.
+  # Current nodes since the 2026-11-04 move; the old 94.249.177.102 and
+  # 109.120.132.43 were disabled (magicdns.ru, "старые узлы отключены").
   magicDns = [
-    "94.249.177.102"
-    "109.120.132.43"
+    "109.120.177.170"
+    "45.88.163.92"
   ];
 
   # ~ routing domains also cover subdomains, so ~anthropic.com handles
