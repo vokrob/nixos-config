@@ -18,9 +18,11 @@
   # ~ routing domains also cover subdomains, so ~anthropic.com handles
   # api/assets/statsig.anthropic.com as well.
   domains = [
+    # Claude / Anthropic.
     "claude.ai"
     "claude.com"
     "anthropic.com"
+    # Google Gemini and AI Studio.
     "gemini.google.com"
     "aistudio.google.com"
     "generativelanguage.googleapis.com"
@@ -30,16 +32,60 @@
     "waa-pa.clients6.google.com"
     "proactivebackend-pa.googleapis.com"
     "signaler-pa.clients6.google.com"
+    # Google Antigravity.
+    "antigravity.google"
+    "antigravity.google.com"
     # ChatGPT/OpenAI, including auth/API and static/upload CDNs.
     "chatgpt.com"
     "openai.com"
     "oaistatic.com"
     "oaiusercontent.com"
+    # Perplexity.
+    "perplexity.ai"
+    # Cursor AI.
+    "cursor.com"
+    "cursor.sh"
+    "cursorapi.com"
+    # xAI Grok.
+    "grok.com"
+    "x.ai"
+    # v0 by Vercel (v0.app is not intercepted by MagicDNS).
+    "v0.dev"
+    # ElevenLabs.
+    "elevenlabs.io"
+    # Suno and Udio.
+    "suno.com"
+    "suno.ai"
+    "udio.com"
+    # Mistral Le Chat.
+    "mistral.ai"
+    # Hugging Face.
+    "huggingface.co"
+    "hf.co"
+    # Runway.
+    "runwayml.com"
+    "runway.com"
+    # Poe by Quora.
+    "poe.com"
     # Midjourney.
     "midjourney.com"
     # Microsoft Copilot.
     "copilot.microsoft.com"
     "edgeservices.bing.com"
+    # GitHub Copilot (github.com itself resolves normally).
+    "api.github.com"
+    "githubcopilot.com"
+    "copilot.github.com"
+    "copilot-proxy.githubusercontent.com"
+    # Notion AI.
+    "notion.so"
+    "notion.com"
+    "notion.site"
+    # DeepL Pro.
+    "deepl.com"
+    # Adobe Firefly.
+    "firefly.adobe.com"
+    "firefly.adobe.io"
     # Xbox / Game Pass.
     "xbox.com"
     "xboxlive.com"
@@ -50,6 +96,9 @@
     "playstation.net"
     "sonyentertainmentnetwork.com"
     "sony.com"
+    # Konami (eFootball / PES / Yu-Gi-Oh).
+    "konami.com"
+    "konami.net"
   ];
 
   routingDomains = map (domain: "~${domain}") domains;
