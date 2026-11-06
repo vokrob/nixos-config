@@ -32,6 +32,16 @@
     "waa-pa.clients6.google.com"
     "proactivebackend-pa.googleapis.com"
     "signaler-pa.clients6.google.com"
+    # Gemini web chat/session backends. The frontend opens processSession
+    # channels and backend RPCs on these hosts; through the RU WARP egress
+    # Google cancels the stream and the UI shows "Something went wrong (1)".
+    "geminiweb-pa.clients6.google.com"
+    "jnn-pa.googleapis.com"
+    "ogads-pa.clients6.google.com"
+    "apis.google.com"
+    "csp.withgoogle.com"
+    "content-push.googleapis.com"
+    "push.clients6.google.com"
     # Google Antigravity.
     "antigravity.google"
     "antigravity.google.com"
