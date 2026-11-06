@@ -3,7 +3,6 @@
     ./base.nix
     ./packages.nix
     ./programs/neovim.nix
-    ./programs/anylogic.nix
     ./programs/firefox.nix
     ./programs/btop.nix
     ./programs/zsh.nix
