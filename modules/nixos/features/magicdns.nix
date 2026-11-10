@@ -8,11 +8,12 @@
   # egress. Xbox resolves to normal Microsoft addresses but benefits from clean
   # MagicDNS answers. Only these domains use it; everything else keeps the
   # public resolvers from networking.nix.
-  # Current nodes since the 2026-11-04 move; the old 94.249.177.102 and
-  # 109.120.132.43 were disabled (magicdns.ru, "старые узлы отключены").
+  # Temporary workaround for the 2026-11-09 blocking of the current nodes
+  # (109.120.177.170 and 45.88.163.92): de.magicdns.ru resolves to the old
+  # 94.249.177.102 gateway and serves both DoH and DoT. resolved supports only
+  # DoT, so use the TLS hostname form; the de.magicdns.ru certificate is valid.
   magicDns = [
-    "109.120.177.170"
-    "45.88.163.92"
+    "94.249.177.102#de.magicdns.ru"
   ];
 
   # ~ routing domains also cover subdomains, so ~anthropic.com handles
@@ -139,8 +140,8 @@ in {
       ip addr replace fd42:42:42::2/128 dev magicdns nodad
       resolvectl dns magicdns ${lib.escapeShellArgs magicDns}
       resolvectl domain magicdns ${lib.escapeShellArgs routingDomains}
-      # Plain DNS keeps cold lookups fast; DoT adds ~300 ms through WARP.
-      resolvectl dnsovertls magicdns no
+      # Encrypt queries to the gateway over DoT; resolved cannot speak DoH.
+      resolvectl dnsovertls magicdns yes
       resolvectl flush-caches
     '';
   };
