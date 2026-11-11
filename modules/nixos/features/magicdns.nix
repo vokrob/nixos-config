@@ -3,17 +3,17 @@
   pkgs,
   ...
 }: let
-  # MagicDNS returns SNI gateway addresses for the AI services and gaming
-  # platforms listed on magicdns.ru, which work from the RU-geolocated WARP
-  # egress. Xbox resolves to normal Microsoft addresses but benefits from clean
-  # MagicDNS answers. Only these domains use it; everything else keeps the
-  # public resolvers from networking.nix.
-  # Temporary workaround for the 2026-11-09 blocking of the current nodes
-  # (109.120.177.170 and 45.88.163.92): de.magicdns.ru resolves to the old
-  # 94.249.177.102 gateway and serves both DoH and DoT. resolved supports only
-  # DoT, so use the TLS hostname form; the de.magicdns.ru certificate is valid.
+  # The scoped link is still named magicdns, but the AI/gaming domains below
+  # are now resolved through QUIC DNS (https://dns.quic.best/), which returns
+  # SNI proxy addresses for the services it supports. Everything else keeps
+  # the public resolvers from networking.nix.
+  # de.magicdns.ru (94.249.177.102) became unusable: TCP/853 accepts
+  # connections, but the DoT handshake times out. QUIC DNS publishes
+  # 194.238.57.69 and serves DoT on 853. resolved cannot speak DoH, so pin the
+  # address and use w.quic.best as the TLS server name; its certificate is
+  # valid.
   magicDns = [
-    "94.249.177.102#de.magicdns.ru"
+    "194.238.57.69#w.quic.best"
   ];
 
   # ~ routing domains also cover subdomains, so ~anthropic.com handles
@@ -60,7 +60,7 @@
     # xAI Grok.
     "grok.com"
     "x.ai"
-    # v0 by Vercel (v0.app is not intercepted by MagicDNS).
+    # v0 by Vercel (v0.app is not intercepted by QUIC DNS).
     "v0.dev"
     # ElevenLabs.
     "elevenlabs.io"
@@ -115,7 +115,7 @@
   routingDomains = map (domain: "~${domain}") domains;
 in {
   systemd.services.magicdns = {
-    description = "Resolve ${lib.concatStringsSep ", " domains} via MagicDNS";
+    description = "Resolve ${lib.concatStringsSep ", " domains} via QUIC DNS";
     after = [
       "systemd-resolved.service"
       "NetworkManager.service"

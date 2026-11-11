@@ -4,7 +4,7 @@
   ...
 }: let
   # The relay domains (see relay-domains.nix) resolve to COMSS SNI relays that
-  # are reachable directly and need /32 routes around awg0. Scoped MagicDNS
+  # are reachable directly and need /32 routes around awg0. Scoped QUIC DNS
   # handles the other AI/gaming services; only OpenRouter stays on COMSS.
   relayDomains = import ./relay-domains.nix;
   domains = relayDomains;

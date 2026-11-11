@@ -11,8 +11,8 @@
     }
   ];
 
-  # Keep the public resolvers as the default. MagicDNS is scoped to the
-  # Claude/Gemini domains in features/magicdns.nix; its routing domains
+  # Keep the public resolvers as the default. The scoped QUIC DNS link in
+  # features/magicdns.nix covers the AI/gaming domains; its routing domains
   # override the awg0 ~. domain for those names only.
   networking.nameservers = [
     "1.1.1.1"
