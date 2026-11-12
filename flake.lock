@@ -181,22 +181,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-blender": {
-      "locked": {
-        "lastModified": 1792506237,
-        "narHash": "sha256-Q/8KLB6jNfpaUN1HAedE/u/Et9feE/zYSsutBLKrCFk=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "5adc50831c259f87faeb09ddf930d43597197473",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1783776592,
@@ -273,7 +257,6 @@
         "home-manager": "home-manager_2",
         "nix-openclaw": "nix-openclaw",
         "nixpkgs": "nixpkgs_3",
-        "nixpkgs-blender": "nixpkgs-blender",
         "openclaw-workspace": "openclaw-workspace"
       }
     },
