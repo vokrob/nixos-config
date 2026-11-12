@@ -52,10 +52,17 @@
     "oaiusercontent.com"
     # Perplexity.
     "perplexity.ai"
+    # DeepSeek.
+    "deepseek.com"
+    # Duck.ai by DuckDuckGo (duckduckgo.com itself is not intercepted).
+    "duck.ai"
     # Cursor AI.
     "cursor.com"
     "cursor.sh"
     "cursorapi.com"
+    # Windsurf (formerly Codeium).
+    "windsurf.com"
+    "codeium.com"
     # xAI Grok.
     "grok.com"
     "x.ai"
