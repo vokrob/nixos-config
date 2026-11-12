@@ -11,7 +11,7 @@
     }
   ];
 
-  # Keep the public resolvers as the default. The scoped QUIC DNS link in
+  # Keep the public resolvers as the default. The scoped MagicDNS link in
   # features/magicdns.nix covers the AI/gaming domains; its routing domains
   # override the awg0 ~. domain for those names only.
   networking.nameservers = [

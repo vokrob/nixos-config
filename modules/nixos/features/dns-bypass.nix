@@ -7,7 +7,7 @@
   # relays (ai-pool/flow-pool.comss.one, NL). The AmneziaWG tunnel egress
   # (Cloudflare WARP) is geolocated to RU, so OpenRouter's real Cloudflare
   # addresses are rejected with 403, while the relay works. All other AI and
-  # gaming services are handled by QUIC DNS on a separate scoped link.
+  # gaming services are handled by MagicDNS on a separate scoped link.
   # 83.220.169.155 drops a large share of UDP queries and does not answer
   # on TCP/53, so systemd-resolved degrades it and stalls cold lookups for
   # seconds; the other two answer on both transports. Keep the most
@@ -17,7 +17,7 @@
     "212.109.195.93"
   ];
 
-  # Domains resolved via COMSS instead of QUIC DNS. The list is shared with
+  # Domains resolved via COMSS instead of MagicDNS. The list is shared with
   # vpn-split.nix, which routes the resulting relay addresses around the
   # tunnel.
   domains = import ./relay-domains.nix;

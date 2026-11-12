@@ -3,17 +3,15 @@
   pkgs,
   ...
 }: let
-  # The scoped link is still named magicdns, but the AI/gaming domains below
-  # are now resolved through QUIC DNS (https://dns.quic.best/), which returns
-  # SNI proxy addresses for the services it supports. Everything else keeps
-  # the public resolvers from networking.nix.
-  # de.magicdns.ru (94.249.177.102) became unusable: TCP/853 accepts
-  # connections, but the DoT handshake times out. QUIC DNS publishes
-  # 194.238.57.69 and serves DoT on 853. resolved cannot speak DoH, so pin the
-  # address and use w.quic.best as the TLS server name; its certificate is
-  # valid.
+  # MagicDNS returns SNI gateway addresses for the AI services and gaming
+  # platforms listed on magicdns.ru, which work from the RU-geolocated WARP
+  # egress. Only these domains use it; everything else keeps the public
+  # resolvers from networking.nix.
+  # The service publishes DoH at https://de.magicdns.ru/dns-query, but
+  # resolved cannot speak DoH, so pin the gateway address and use
+  # de.magicdns.ru as the TLS server name for DoT; its certificate is valid.
   magicDns = [
-    "194.238.57.69#w.quic.best"
+    "94.249.177.102#de.magicdns.ru"
   ];
 
   # ~ routing domains also cover subdomains, so ~anthropic.com handles
@@ -60,7 +58,7 @@
     # xAI Grok.
     "grok.com"
     "x.ai"
-    # v0 by Vercel (v0.app is not intercepted by QUIC DNS).
+    # v0 by Vercel (v0.app is not intercepted by MagicDNS).
     "v0.dev"
     # ElevenLabs.
     "elevenlabs.io"
@@ -115,7 +113,7 @@
   routingDomains = map (domain: "~${domain}") domains;
 in {
   systemd.services.magicdns = {
-    description = "Resolve ${lib.concatStringsSep ", " domains} via QUIC DNS";
+    description = "Resolve ${lib.concatStringsSep ", " domains} via MagicDNS";
     after = [
       "systemd-resolved.service"
       "NetworkManager.service"
