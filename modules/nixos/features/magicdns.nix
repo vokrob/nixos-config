@@ -7,11 +7,12 @@
   # platforms listed on magicdns.ru, which work from the RU-geolocated WARP
   # egress. Only these domains use it; everything else keeps the public
   # resolvers from networking.nix.
-  # The service publishes DoH at https://de.magicdns.ru/dns-query, but
-  # resolved cannot speak DoH, so pin the gateway address and use
-  # de.magicdns.ru as the TLS server name for DoT; its certificate is valid.
+  # The service publishes DoH at https://api.magicinfo.art/rpc, but resolved
+  # cannot speak DoH, so pin the published gateway addresses and use
+  # api.magicinfo.art as the TLS server name for DoT; its certificate is valid.
   magicDns = [
-    "94.249.177.102#de.magicdns.ru"
+    "217.144.190.216#api.magicinfo.art"
+    "109.120.187.249#api.magicinfo.art"
   ];
 
   # ~ routing domains also cover subdomains, so ~anthropic.com handles
